@@ -16,3 +16,15 @@ Instalamos docker, instalamos el servicio LAMP
 docker pull joaquindlz/rpi-docker-lamp
 ```
 
+Accedemos a la imagen y actualizamos
+
+```
+docker exec -ti <ID IMAGEN> bash
+
+apt update
+apt upgrade
+apt install -y phpmyadmin
+```
+
+
+Seguimos este minitutorial para instalar phpmyadmin dentro del docker `https://pimylifeup.com/raspberry-pi-phpmyadmin/`
