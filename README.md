@@ -26,5 +26,6 @@ apt upgrade
 apt install -y phpmyadmin
 ```
 
-
 Seguimos este minitutorial para instalar phpmyadmin dentro del docker `https://pimylifeup.com/raspberry-pi-phpmyadmin/`
+
+Para finalizar el tutorial he creado el usuario `username` con contraseña `password` ( Soy experto en seguridad informatica :D ) para acceder a phpmyadmin
