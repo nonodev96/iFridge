@@ -10,7 +10,7 @@ https://hub.docker.com/r/joaquindlz/rpi-docker-lamp
 
 Intente durante varias horas instalar `nanoninja/docker-nginx-php-mysql` pero da problemas por la arquitectura en la que está definido el proyecto.
 
-Instalamos docker,
+Instalamos docker, instalamos el servicio LAMP
 
 ```bash
 docker pull joaquindlz/rpi-docker-lamp
