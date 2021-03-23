@@ -33,8 +33,8 @@ class Database extends Config
 	public $default = [
 		'DSN'      => '',
 		'hostname' => 'localhost',
-		'username' => '',
-		'password' => '',
+		'username' => 'ifridge',
+		'password' => '123456789',
 		'database' => '',
 		'DBDriver' => 'MySQLi',
 		'DBPrefix' => '',
