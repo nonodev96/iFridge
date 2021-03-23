@@ -26,6 +26,6 @@
 
 <?php
 
-if(!empty($lastentities)){
-  var_dump($lastentities)
+if (!empty($lastentities)) {
+    var_dump($lastentities);
 }
