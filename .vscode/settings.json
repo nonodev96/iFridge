@@ -1,0 +1,13 @@
+{
+    "explorer.confirmDelete": false,
+    "editor.formatOnSave": true,
+    "php.validate.executablePath": "/usr/bin/php",
+    "[php]": {
+        "editor.defaultFormatter": "valeryanm.vscode-phpsab",
+    },
+    "phpcbf.enable": false,
+    "phpcbf.documentFormattingProvider": true,
+    "phpcbf.onsave": true,
+    "phpcbf.standard": null,
+    "phpsab.standard": ".vscode/ruleset.xml", //"./vendor/codeigniter4/codeigniter4-standard/CodeIgniter4/ruleset.xml", //"PSR2",
+}

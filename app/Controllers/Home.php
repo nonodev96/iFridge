@@ -9,12 +9,18 @@ class Home extends BaseController
     {
         $userModel = new UserModel();
         //view('welcome_message');
-        //phpinfo();
-        
-        $data = [ 'lastentities' => $userModel->findAll(), 'variable' => 'Funciona' ];
-        echo view('template/html_init');
 
+        $data = [
+            'lastentities' => $userModel->findAll(),
+            'variable' => 'Funciona',
+        ];
+        echo view('template/html_init');
         echo view('template/index', $data);
         echo view('template/html_end');
+        /*
+        $client = \Config\Services::curlrequest();
+        $response = $client->request('GET', 'http://example.com', ['allow_redirects' => false]);
+        var_dump($response);
+        */
     }
 }

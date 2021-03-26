@@ -1,23 +1,12 @@
 name: ifridge
 recipe: lamp
-config:
-  webroot: public/
 services:
   appserver:
+    webroot: public
     xdebug: "debug,develop"
+    config:
+      php: .vscode/php.ini
   myservice:
     type: phpmyadmin
     hosts:
       - database
-proxy:
-  appserver:
-    - hostname: ifridge-local.lndo.site
-      port: 80
-      pathname: /
-      middlewares:
-        - name: test
-          key: headers.customrequestheaders.X-Lando-Test
-          value: on
-        - name: test-secured
-          key: headers.customrequestheaders.X-Lando-Test-SSL
-          value: on
