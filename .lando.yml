@@ -4,6 +4,7 @@ services:
   appserver:
     webroot: public
     xdebug: "debug,develop"
+    type: php:7.4
     config:
       php: .vscode/php.ini
   myservice:
