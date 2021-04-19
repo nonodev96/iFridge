@@ -2,6 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Models\UserModel;
+use CodeIgniter\HTTP\RedirectResponse;
+
 class Dashboard extends BaseController
 {
 
@@ -13,25 +16,27 @@ class Dashboard extends BaseController
 
         if ($this->request->getMethod() === 'post') {
             $rules = [
-                'email'    => 'required|min_length[6]|max_length[50]|valid_email',
-                'password' => 'required|min_length[8]|max_length[255]|validateUser[email,password]',
-            ];
+                      'email'    => 'required|min_length[6]|max_length[50]|valid_email',
+                      'password' => 'required|min_length[8]|max_length[255]|validateUser[email,password]',
+                     ];
 
             $errors = [
-                'password' => ['validateUser' => 'Email or Password don\'t match'],
-            ];
+                       'password' => ['validateUser' => 'Email or Password don\'t match'],
+                      ];
 
-            if (! $this->validate($rules, $errors)) {
+            if (!$this->validate($rules, $errors)) {
                 $data['validation'] = $this->validator;
             } else {
                 $model = new UserModel();
 
-                $user = $model->where('email', $this->request->getVar('email'))
-                    ->first();
+                $user = $model->where('email', $this->request->getVar('email'))->first();
 
-                $this->setUserSession($user);
+
+                $this->_setUserSession($user);
                 // $session->setFlashdata('success', 'Successful Registration');
-                return redirect()->to('dashboard');
+                $redirect = redirect();
+                $redirect->to('dashboard');
+                return $redirect;
             }
         }
 
@@ -41,6 +46,13 @@ class Dashboard extends BaseController
         echo view('auth/login');
         echo view('template/html_end');
 
+        return '';
+
+    }
+
+    private function _setUserSession(array $user)
+    {
+        var_dump($user);
     }
 
 

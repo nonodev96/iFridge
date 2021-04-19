@@ -23,12 +23,11 @@ class Home extends BaseController
 
     public function index()
     {
-        var_dump($this->generate_qrcode("pepe"));
+        var_dump($this->_generateQrcode("pepe"));
 
     }
 
-
-    private function generate_qrcode($data="titulo")
+    private function _generateQrcode($data="titulo"): array
     {
         $ciqrcode = new CiQrCode();
 
@@ -39,24 +38,24 @@ class Home extends BaseController
         /* QR Code File Directory Initialize */
         $dir = 'assets/media/qrcode/';
         if (! file_exists($dir)) {
-            mkdir($dir, 0775, true);
+            mkdir($dir, 0775, TRUE);
         }
 
         /* QR Configuration  */
-        $config['cacheable'] = true;
+        $config['cacheable'] = TRUE;
         $config['imagedir']  = $dir;
-        $config['quality']   = true;
+        $config['quality']   = TRUE;
         $config['size']      = '1024';
         $config['black']     = [
-            255,
-            255,
-            255,
-        ];
+                                255,
+                                255,
+                                255,
+                               ];
         $config['white']     = [
-            255,
-            255,
-            255,
-        ];
+                                255,
+                                255,
+                                255,
+                               ];
         $ciqrcode->initialize($config);
 
         /* QR Data  */
@@ -69,9 +68,9 @@ class Home extends BaseController
 
         /* Return Data */
         return [
-            'content' => $data,
-            'file'    => $dir.$saveName,
-        ];
+                'content' => $data,
+                'file'    => $dir.$saveName,
+               ];
 
     }
 
