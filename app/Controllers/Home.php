@@ -23,7 +23,25 @@ class Home extends BaseController
 
     public function index()
     {
-        var_dump($this->_generateQrcode("pepe"));
+//        $to      = "nonodev96@gmail.com";
+//        $subject = "Prueba";
+//        $message = "Mensaje";
+//
+//        $email = \Config\Services::email();
+//
+//        $email->setTo($to);
+//        $email->setFrom('nonodev96@gmail.com', 'Confirm Registration');
+//
+//        $email->setSubject($subject);
+//        $email->setMessage($message);
+//
+//        $data = $email->printDebugger(['headers']);
+//
+//        if ($email->send()) {
+//            echo 'Email successfully sent';
+//        } else {
+//            echo ':(';
+//        }
 
     }
 

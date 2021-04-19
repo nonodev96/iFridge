@@ -20,37 +20,37 @@ class User extends Migration
     {
         $this->forge->addField(
             [
-                'user_id'       => [
-                    'type'           => 'INT',
-                    'constraint'     => 5,
-                    'unsigned'       => true,
-                    'auto_increment' => true
-                ],
-                'name'          => [
-                    'type'           => 'VARCHAR',
-                    'constraint'     => '255',
-                ],
-                'email'         => [
-                    'type'           => 'VARCHAR',
-                    'constraint'     => '255',
-                ],
-                'password'      => [
-                    'type'           => 'VARCHAR',
-                    'constraint'     => '255',
-                ],
-                'category_id'   => [
-                    'type'           => 'INT',
-                    'constraint'     => 5,
-                    'unsigned'       => true
-                ],
-                'inventory_id'   => [
-                    'type'           => 'INT',
-                    'constraint'     => 5,
-                    'unsigned'       => true
-                ],
+             'user_id'      => [
+                                'type'           => 'INT',
+                                'constraint'     => 5,
+                                'unsigned'       => TRUE,
+                                'auto_increment' => TRUE,
+             ],
+             'name'         => [
+                                'type'       => 'VARCHAR',
+                                'constraint' => '255',
+             ],
+             'email'        => [
+                                'type'       => 'VARCHAR',
+                                'constraint' => '255',
+             ],
+             'password'     => [
+                                'type'       => 'VARCHAR',
+                                'constraint' => '255',
+             ],
+             'category_id'  => [
+                                'type'       => 'INT',
+                                'constraint' => 5,
+                                'unsigned'   => TRUE,
+             ],
+             'inventory_id' => [
+                                'type'       => 'INT',
+                                'constraint' => 5,
+                                'unsigned'   => TRUE,
+             ],
             ]
         );
-        $this->forge->addKey('user_id', true);
+        $this->forge->addKey('user_id', TRUE);
         $this->forge->createTable('user');
     }
 
