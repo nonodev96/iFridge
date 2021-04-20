@@ -16,7 +16,10 @@ class Home extends BaseController
 
     public function __construct()
     {
-        $this->m = new MyCustomClass();
+        echo view("template/html_init");
+        echo view("template/html_header");
+        echo view("mqtt/mqtt");
+        echo view("template/html_end");
 
     }
 

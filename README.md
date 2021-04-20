@@ -8,6 +8,12 @@ Toda la configuración del proyecto web esta en el fichero `.lando.yml`
 
 
 ```
+lando start
+lando php spark migration
+```
+
+
+```
 C:\Users\nono_\AppData\Roaming\Composer\vendor\bin\php-cs-fixer.bat
 C:\Users\nono_\AppData\Roaming\Composer\vendor\bin\config.php_cs
 ```
