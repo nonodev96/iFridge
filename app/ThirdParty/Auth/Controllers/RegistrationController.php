@@ -1,4 +1,5 @@
 <?php
+
 namespace Auth\Controllers;
 
 use CodeIgniter\Controller;
@@ -57,18 +58,18 @@ class RegistrationController extends Controller
         helper('text');
 
         // save new user, validation happens in the model
-        $users   = new UserModel();
+        $users = new UserModel();
         $getRule = $users->getRule('registration');
         $users->setValidationRules($getRule);
         $user = [
-                 'name'          	=> $this->request->getPost('name'),
-                 'email'         	=> $this->request->getPost('email'),
-                 'password'         => $this->request->getPost('password'),
-                 'password_confirm'	=> $this->request->getPost('password_confirm'),
-                 'activate_hash' 	=> random_string('alnum', 32)
+            'name'             => $this->request->getPost('name'),
+            'email'            => $this->request->getPost('email'),
+            'password'         => $this->request->getPost('password'),
+            'password_confirm' => $this->request->getPost('password_confirm'),
+            'activate_hash'    => random_string('alnum', 32)
         ];
 
-        if (! $users->save($user)) {
+        if (!$users->save($user)) {
             return redirect()->back()->withInput()->with('errors', $users->errors());
         }
 
@@ -101,7 +102,7 @@ class RegistrationController extends Controller
         }
 
         // update user account to active
-        $updatedUser['id']     = $user['id'];
+        $updatedUser['id'] = $user['id'];
         $updatedUser['active'] = 1;
         $users->save($updatedUser);
 

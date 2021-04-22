@@ -1,4 +1,5 @@
 <?php
+
 namespace Auth\Controllers;
 
 use App\Models\UserModel;
@@ -40,15 +41,15 @@ class AccountController extends Controller
      */
     public function account()
     {
-        if (! $this->session->isLoggedIn) {
+        if (!$this->session->isLoggedIn) {
             return redirect()->to('login');
         }
 
         return view(
             $this->config->views['account'],
             [
-             'userData' => $this->session->userData,
-             'config' => $this->config
+                'userData' => $this->session->userData,
+                'config'   => $this->config
             ]
         );
     }
@@ -61,15 +62,15 @@ class AccountController extends Controller
     public function updateAccount(): \CodeIgniter\HTTP\RedirectResponse
     {
         // update user, validation happens in model
-        $users   = new UserModel();
+        $users = new UserModel();
         $getRule = $users->getRule('updateAccount');
         $users->setValidationRules($getRule);
         $user = [
-                 'id'   	=> $this->session->get('userData.id'),
-                 'name' 	=> $this->request->getPost('name')
+            'id'   => $this->session->get('userData.id'),
+            'name' => $this->request->getPost('name')
         ];
 
-        if (! $users->save($user)) {
+        if (!$users->save($user)) {
             return redirect()->back()->withInput()->with('errors', $users->errors());
         }
 
@@ -90,9 +91,9 @@ class AccountController extends Controller
 
         // check password
         $users = new UserModel();
-        $user  = $users->find($this->session->get('userData.id'));
-        if (empty($this->request->getPost('password')) 
-            || ! password_verify($this->request->getPost('password'), $user['password_hash'])
+        $user = $users->find($this->session->get('userData.id'));
+        if (empty($this->request->getPost('password'))
+            || !password_verify($this->request->getPost('password'), $user['password_hash'])
         ) {
             return redirect()->to('account')->withInput()->with('error', lang('Auth.wrongCredentials'));
         }
@@ -101,11 +102,11 @@ class AccountController extends Controller
         $getRule = $users->getRule('changeEmail');
         $users->setValidationRules($getRule);
         $updatedUser = [
-                        'id'			=> $this->session->get('userData.id'),
-                        'new_email'		=> $this->request->getPost('new_email'),
-                        'activate_hash'	=> random_string('alnum', 32),
+            'id'            => $this->session->get('userData.id'),
+            'new_email'     => $this->request->getPost('new_email'),
+            'activate_hash' => random_string('alnum', 32),
         ];
-        if (! $users->save($updatedUser)) {
+        if (!$users->save($updatedUser)) {
             return redirect()->back()->withInput()->with('errors', $users->errors());
         }
 
@@ -134,14 +135,14 @@ class AccountController extends Controller
         // check token and if new email is set
         $user = $users->where('activate_hash', $this->request->getGet('token'))->where('new_email !=', NULL)->first();
 
-        if (! $user) {
+        if (!$user) {
             return redirect()->to('account')->with('error', lang('Auth.activationNoUser'));
         }
 
         // set new email as current
-        $updatedUser['id']            = $user['id'];
-        $updatedUser['email']         = $user['new_email'];
-        $updatedUser['new_email']     = NULL;
+        $updatedUser['id'] = $user['id'];
+        $updatedUser['email'] = $user['new_email'];
+        $updatedUser['new_email'] = NULL;
         $updatedUser['activate_hash'] = NULL;
         $users->save($updatedUser);
 
@@ -149,12 +150,12 @@ class AccountController extends Controller
         if ($this->session->isLoggedIn) {
             $this->session->push(
                 'userData', [
-                             'email'		=> $updatedUser['email'],
-                             'new_email'	=> NULL,
+                    'email'     => $updatedUser['email'],
+                    'new_email' => NULL,
                 ]
             );
 
-               return redirect()->to('account')->with('success', lang('Auth.confirmEmailSuccess'));
+            return redirect()->to('account')->with('success', lang('Auth.confirmEmailSuccess'));
         }
 
         return redirect()->to('login')->with('success', lang('Auth.confirmEmailSuccess'));
@@ -169,27 +170,27 @@ class AccountController extends Controller
     {
         // validate request
         $rules = [
-                  'password' 	=> 'required|min_length[5]',
-                  'new_password' => 'required|min_length[5]',
-                  'new_password_confirm' => 'required|matches[new_password]',
+            'password'             => 'required|min_length[5]',
+            'new_password'         => 'required|min_length[5]',
+            'new_password_confirm' => 'required|matches[new_password]',
         ];
 
-        if (! $this->validate($rules)) {
+        if (!$this->validate($rules)) {
             return redirect()->to('account')->withInput()->with('errors', $this->validator->getErrors());
         }
 
         // check current password
         $users = new UserModel();
-        $user  = $users->find($this->session->get('userData.id'));
+        $user = $users->find($this->session->get('userData.id'));
 
-        if (! $user 
-            || ! password_verify($this->request->getPost('password'), $user['password_hash'])
+        if (!$user
+            || !password_verify($this->request->getPost('password'), $user['password_hash'])
         ) {
             return redirect()->to('account')->withInput()->with('error', lang('Auth.wrongCredentials'));
         }
 
         // update user's password
-        $updatedUser['id']       = $this->session->get('userData.id');
+        $updatedUser['id'] = $this->session->get('userData.id');
         $updatedUser['password'] = $this->request->getPost('new_password');
         $users->save($updatedUser);
 
@@ -206,10 +207,10 @@ class AccountController extends Controller
     {
         // check current password
         $users = new UserModel();
-        $user  = $users->find($this->session->get('userData.id'));
+        $user = $users->find($this->session->get('userData.id'));
 
-        if (! $user 
-            || ! password_verify($this->request->getPost('password'), $user['password_hash'])
+        if (!$user
+            || !password_verify($this->request->getPost('password'), $user['password_hash'])
         ) {
             return redirect()->back()->withInput()->with('error', lang('Auth.wrongCredentials'));
         }
@@ -218,7 +219,10 @@ class AccountController extends Controller
         $users->delete($this->session->get('userData.id'));
 
         // log out user
-        $this->session->remove(['isLoggedIn', 'userData']);
+        $this->session->remove([
+            'isLoggedIn',
+            'userData'
+        ]);
 
         // redirect to register with success message
         return redirect()->to('register')->with('success', lang('Auth.accountDeleted'));

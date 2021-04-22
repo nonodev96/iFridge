@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\Fullcalendar_Model;
+use App\Models\FullCalendarModel;
 
 class Fullcalendar extends BaseController
 {
@@ -11,7 +11,7 @@ class Fullcalendar extends BaseController
 
     public function __construct()
     {
-        $this->fullCalendar_model = new Fullcalendar_Model();
+        $this->fullCalendar_model = new FullCalendarModel();
     }
 
     function load()

@@ -8,22 +8,33 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= base_url() ?>/sensores">Sensores</a>
+                    <a class="nav-link" href="<?= base_url() ?>/Mqtt">Mqtt</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Sensores</a>
-                </li>
+                <?php if (session('isLoggedIn')): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= base_url() ?>/account">Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= site_url('logout') ?>"><?= lang('Auth.logout') ?></a>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= base_url() ?>/login">Login</a>
+                    </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                 </li>
             </ul>
+            <!--
             <form class="form-inline mt-2 mt-md-0">
                 <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
+            -->
         </div>
     </nav>
 </header>

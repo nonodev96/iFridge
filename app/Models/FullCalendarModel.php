@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Fullcalendar_Model extends Model
+class FullCalendarModel extends Model
 {
     protected $DBGroup          = 'default';
     protected $table            = 'full_calendar';
