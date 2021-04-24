@@ -4,29 +4,32 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Fullcalendar extends Migration
+class Tag extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-            'id'          => [
+            'tag_id' => [
                 'type'           => 'int',
                 'constraint'     => 11,
                 'auto_increment' => true
             ],
-            'title'       => [
+            'label'  => [
                 'type'       => 'varchar',
                 'constraint' => 255
             ],
-            'start_event' => ['type' => 'datetime'],
-            'end_event'   => ['type' => 'datetime'],
+            'url'    => [
+                'type'       => 'varchar',
+                'constraint' => 255
+            ],
         ]);
-        $this->forge->addKey('id', true);
-        $this->forge->createTable('full_calendar', true);
+        $this->forge->addKey('tag_id', true);
+        $this->forge->addUniqueKey('label');
+        $this->forge->createTable('tags', true);
     }
 
     public function down()
     {
-        $this->forge->dropTable('full_calendar', true);
+        $this->forge->dropTable('tags', true);
     }
 }

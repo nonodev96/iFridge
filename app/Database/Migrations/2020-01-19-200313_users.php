@@ -9,10 +9,9 @@ class Users extends Migration
     public function up()
     {
         $this->forge->addField([
-            'id'            => [
+            'user_id'       => [
                 'type'           => 'int',
                 'constraint'     => 11,
-                'unsigned'       => true,
                 'auto_increment' => true
             ],
             'email'         => [
@@ -52,6 +51,11 @@ class Users extends Migration
                 'null'       => 0,
                 'default'    => 0
             ],
+            'role'          => [
+                'type'       => 'tinyint',
+                'constraint' => 1,
+                'null'       => true
+            ],
             'created_at'    => [
                 'type' => 'bigint',
                 'null' => true
@@ -61,9 +65,17 @@ class Users extends Migration
                 'null' => true
             ]
         ]);
-        $this->forge->addKey('id', true);
+        $this->forge->addKey('user_id', true);
         $this->forge->addUniqueKey('email');
         $this->forge->createTable('users', true);
+
+        $this->db->query(
+            <<<EOC
+INSERT INTO `users` (`user_id`, `email`, `new_email`, `password_hash`, `name`, `activate_hash`, `reset_hash`, `reset_expires`, `active`, `role`, `created_at`, `updated_at`) VALUES
+(1, 'nonodev96@gmail.com', NULL, '$2y$10\$q29owR6dzaZWb3C8kzUxoOJHe4q72LINBw5tPSJuFf90QLkn14S7W', 'Antonio Mudarra Machuca', 'Op9SWeqkrncPzDH2aLV4UFX3TZYwt5ul', NULL, NULL, 1, 1, 1619205036, 1619205052);
+EOC
+        );
+
     }
 
 

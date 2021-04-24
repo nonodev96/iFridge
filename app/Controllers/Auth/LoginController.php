@@ -1,6 +1,6 @@
 <?php
 
-namespace Auth\Controllers;
+namespace App\Controllers\Auth;
 
 use CodeIgniter\Controller;
 use Config\Email;
@@ -30,7 +30,7 @@ class LoginController extends Controller
         $this->session = Services::session();
 
         // load auth settings
-        $this->config = config('Auth');
+        $this->config = config('App');
     }
 
     //--------------------------------------------------------------------
@@ -84,10 +84,11 @@ class LoginController extends Controller
         // login OK, save user data to session
         $this->session->set('isLoggedIn', true);
         $this->session->set('userData', [
-            'id'        => $user['id'],
+            'user_id'   => $user['user_id'],
             'name'      => $user['name'],
             'email'     => $user['email'],
-            'new_email' => $user['new_email']
+            'new_email' => $user['new_email'],
+            'role'      => $user['role'],
         ]);
 
         return redirect()->to('account');

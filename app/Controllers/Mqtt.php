@@ -7,9 +7,14 @@ use App\Controllers\BaseController;
 
 class Mqtt extends BaseController
 {
-    public function index()
+    public function __construct()
     {
-        view("mqtt/mqtt");
+        parent::__construct();
+    }
+
+    public function index(): string
+    {
+        view("pages/mqtt");
         return view("template/layout");
     }
 }

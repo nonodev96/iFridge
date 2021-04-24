@@ -4,20 +4,20 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class FullCalendarModel extends Model
+class TagModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'full_calendar';
-    protected $primaryKey       = 'id';
+    protected $table            = 'tags';
+    protected $primaryKey       = 'tag_id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDelete    = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'title',
-        'start_event',
-        'end_event'
+        'tag_id',
+        'label',
+        'url'
     ];
 
     // Dates
@@ -44,24 +44,40 @@ class FullCalendarModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function fetch_all_event(): array
+
+    function fetch_all_tags(): array
     {
         return $this->findAll();
     }
 
-    function insert_event($data)
+    function exist_tag($key): bool
     {
-        try {
-            $this->insert($data);
-        } catch (\ReflectionException $e) {
-            //var_dump($e);
+        $this->where('label', $key);
+        if ($this->countAllResults() > 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 
-    function update_event($data, $id)
+
+    function insert_tag($data): bool
+    {
+        $status = false;
+        try {
+            if (!$this->exist_tag($data['label'])) {
+                $status = $this->insert($data);
+            }
+        } catch (\ReflectionException $e) {
+            //var_dump($e);
+        }
+        return $status;
+    }
+
+    function update_tag($data, $id)
     {
         try {
-            $this->where('id', $id)->update($id, $data);
+            $this->where('tag_id', $id)->update($id, $data);
         } catch (\ReflectionException $e) {
             var_dump($e);
         }
@@ -69,7 +85,7 @@ class FullCalendarModel extends Model
 
     function delete_event($id)
     {
-        $this->where('id', $id)->delete($id);
+        $this->where('tag_id', $id)->delete($id);
     }
 
 }

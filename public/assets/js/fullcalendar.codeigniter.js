@@ -30,7 +30,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     let start = new Date(event.start);
                     start.setDate(start.getDate() + 1);
-                    const end = new Date(event.end);
+                    let end = new Date(event.end != null ? event.end : start)
+
 
                     $.ajax({
                         url: "/fullcalendar/insert",
@@ -50,8 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
             eventResize: (info) => {
 
                 let start = new Date(info.event.start);
-                start.setDate(start.getDate() + 1);
-                const end = new Date(info.event.end);
+                let end = new Date(info.event.end != null ? info.event.end : start)
 
                 const title = info.event.title;
                 const id = info.event.id;
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const id = info.event.id;
 
                 let start = new Date(info.event.start);
-                const end = new Date(info.event.end);
+                let end = new Date(info.event.end != null ? info.event.end : start)
 
                 $.ajax({
                     url: "fullcalendar/update",

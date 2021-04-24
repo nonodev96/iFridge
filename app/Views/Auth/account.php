@@ -1,9 +1,13 @@
 <?= $this->extend($config->viewLayout) ?>
 <?= $this->section('main') ?>
     <div class="container">
-
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-12">
+                <?php var_dump($_SESSION); ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
                 <h2><?= lang('Auth.accountSettings') ?></h2>
 
                 <form method="POST" action="<?= site_url('account'); ?>" accept-charset="UTF-8">
@@ -29,7 +33,7 @@
                 </form>
 
             </div>
-            <div class="col-md-3">
+            <div class="col-md-6">
 
                 <!-- CHANGE EMAIL -->
                 <h2><?= lang('Auth.changeEmail') ?></h2>
@@ -55,8 +59,10 @@
                 </form>
 
             </div>
-
-            <div class="col-md-3">
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
                 <!-- CHANGE PASSWORD -->
                 <h2><?= lang('Auth.changePassword') ?></h2>
 
@@ -86,20 +92,20 @@
             </div>
 
 
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <!-- DELETE ACCOUNT -->
                 <h2><?= lang('Auth.deleteAccount') ?></h2>
 
                 <form method="POST" action="<?= site_url('delete-account') ?>" accept-charset="UTF-8">
                     <?= csrf_field() ?>
-                    <p><?= lang('Auth.deleteAccountInfo') ?></p>
                     <div class="form-group">
                         <label for="delete_account_password_id"><?= lang('Auth.currentPassword') ?></label>
                         <input id="delete_account_password_id" required class="form-control" type="password"
                                name="password" value=""/>
                     </div>
+                    <p><?= lang('Auth.deleteAccountInfo') ?></p>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary"
+                        <button type="submit" class="btn btn-danger"
                                 onclick="return confirm('<?= lang('Auth.areYouSure') ?>')"><?= lang('Auth.deleteAccount') ?></button>
                     </div>
                 </form>

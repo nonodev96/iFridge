@@ -9,11 +9,14 @@ use App\Libraries\CiQrCode;
 
 class Home extends BaseController
 {
-
-
-    public function index()
+    public function __construct()
     {
-        view("calendar/calendar");
+        parent::__construct();
+    }
+
+    public function index(): string
+    {
+        view("pages/calendar");
         return view("template/layout");
     }
 

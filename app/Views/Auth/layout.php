@@ -19,7 +19,7 @@ if (session('isLoggedIn')) {
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <?= view('Auth\Views\_notifications') ?>
+                <?= view('Auth/_notifications') ?>
             </div>
         </div>
     </div>

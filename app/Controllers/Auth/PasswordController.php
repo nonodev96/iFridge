@@ -1,6 +1,6 @@
 <?php
 
-namespace Auth\Controllers;
+namespace App\Controllers\Auth;
 
 use CodeIgniter\Controller;
 use CodeIgniter\Session\Session;
@@ -32,7 +32,7 @@ class PasswordController extends Controller
         $this->session = Services::session();
 
         // load auth settings
-        $this->config = config('Auth');
+        $this->config = config('App');
     }
 
     //--------------------------------------------------------------------
@@ -69,7 +69,7 @@ class PasswordController extends Controller
 
         // set reset hash and expiration
         helper('text');
-        $updatedUser['id'] = $user['id'];
+        $updatedUser['user_id'] = $user['user_id'];
         $updatedUser['reset_hash'] = random_string('alnum', 32);
         $updatedUser['reset_expires'] = time() + HOUR;
         $users->save($updatedUser);
@@ -120,7 +120,7 @@ class PasswordController extends Controller
         }
 
         // update user password
-        $updatedUser['id'] = $user['id'];
+        $updatedUser['user_id'] = $user['user_id'];
         $updatedUser['password'] = $this->request->getPost('password');
         $updatedUser['reset_hash'] = NULL;
         $updatedUser['reset_expires'] = NULL;

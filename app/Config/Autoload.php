@@ -40,12 +40,10 @@ class Autoload extends AutoloadConfig
      *
      * @var array<string, string>
      */
+    // For custom app namespace
     public $psr4 = [
-//                    APP_NAMESPACE => APPPATH, // For custom app namespace
-//                    'Config'      => APPPATH.'Config',
-                    'Config'        => APPPATH . 'Config',
-                    'App'           => APPPATH,
-                    'Auth'          => APPPATH . 'ThirdParty/Auth',
+        APP_NAMESPACE => APPPATH,
+        'Config'      => APPPATH . 'Config',
     ];
 
     /**

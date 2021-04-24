@@ -5,6 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Services;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -28,6 +29,19 @@ class BaseController extends Controller
      * @var array
      */
     protected $helpers = [];
+
+    protected $session;
+
+    protected $config;
+
+    public function __construct()
+    {
+        // start session
+        $this->session = Services::session();
+
+        // load auth settings
+        $this->config = config('App');
+    }
 
 
     /**

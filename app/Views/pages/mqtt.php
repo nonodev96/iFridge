@@ -1,10 +1,10 @@
-<?= $this->section('page_title') ?>MQTT<?= $this->endSection() ?>
-<?= $this->section('css') ?>
+<?php $this->section('page_title') ?>MQTT<?php $this->endSection() ?>
+<?php $this->section('css') ?>
 
-<?= $this->endSection() ?>
+<?php $this->endSection() ?>
 
 
-<?= $this->section('content') ?>
+<?php $this->section('content') ?>
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -108,10 +108,10 @@
             </div>
         </div>
     </div>
-<?= $this->endSection() ?>
+<?php $this->endSection() ?>
 
 
-<?= $this->section('scripts') ?>
+<?php $this->section('scripts') ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
     <script src="/assets/js/mqtt_ifridge.js"></script>
-<?= $this->endSection() ?>
+<?php $this->endSection() ?>

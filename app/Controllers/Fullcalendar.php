@@ -11,26 +11,28 @@ class Fullcalendar extends BaseController
 
     public function __construct()
     {
+        parent::__construct();
         $this->fullCalendar_model = new FullCalendarModel();
     }
 
-    function load()
+    public function load(): \CodeIgniter\HTTP\ResponseInterface
     {
-        $data = [];
+        $to_return = [];
         $event_data = $this->fullCalendar_model->fetch_all_event();
         foreach ($event_data as $row) {
-            $data[] = array(
+            $to_return[] = array(
                 'id'    => $row['id'],
                 'title' => $row['title'],
                 'start' => $row['start_event'],
                 'end'   => $row['end_event']
             );
         }
-        return $this->response->setJSON($data);
+        return $this->response->setJSON($to_return);
     }
 
-    function insert()
+    public function insert(): \CodeIgniter\HTTP\ResponseInterface
     {
+        $to_return = [];
         if ($this->request->getPost('title')) {
             $data = array(
                 'title'       => $this->request->getPost('title'),
@@ -38,11 +40,16 @@ class Fullcalendar extends BaseController
                 'end_event'   => $this->request->getPost('end')
             );
             $this->fullCalendar_model->insert_event($data);
+            $to_return = [
+                'status' => 'ok'
+            ];
         }
+        return $this->response->setJSON($to_return);
     }
 
-    function update()
+    public function update(): \CodeIgniter\HTTP\ResponseInterface
     {
+        $to_return = [];
         if ($this->request->getPost('id')) {
             $data = array(
                 'title'       => $this->request->getPost('title'),
@@ -51,17 +58,22 @@ class Fullcalendar extends BaseController
             );
 
             $this->fullCalendar_model->update_event($data, $this->request->getPost('id'));
-        }
-    }
-
-    function delete()
-    {
-        if ($this->request->getPost('id') != null) {
-            $this->fullCalendar_model->delete_event($this->request->getPost('id'));
-            $data = [
+            $to_return = [
                 'status' => 'ok'
             ];
-            return $this->response->setJSON($data);
         }
+        return $this->response->setJSON($to_return);
+    }
+
+    public function delete(): \CodeIgniter\HTTP\ResponseInterface
+    {
+        $to_return = [];
+        if ($this->request->getPost('id') != null) {
+            $this->fullCalendar_model->delete_event($this->request->getPost('id'));
+            $to_return = [
+                'status' => 'ok'
+            ];
+        }
+        return $this->response->setJSON($to_return);
     }
 }

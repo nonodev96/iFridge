@@ -1,6 +1,6 @@
 <?php
 
-namespace Auth\Controllers;
+namespace App\Controllers\Auth;
 
 use CodeIgniter\Controller;
 use CodeIgniter\Session\Session;
@@ -31,7 +31,7 @@ class RegistrationController extends Controller
         $this->session = Services::session();
 
         // load auth settings
-        $this->config = config('Auth');
+        $this->config = config('App');
     }
 
     //--------------------------------------------------------------------
@@ -102,7 +102,7 @@ class RegistrationController extends Controller
         }
 
         // update user account to active
-        $updatedUser['id'] = $user['id'];
+        $updatedUser['user_id'] = $user['user_id'];
         $updatedUser['active'] = 1;
         $users->save($updatedUser);
 

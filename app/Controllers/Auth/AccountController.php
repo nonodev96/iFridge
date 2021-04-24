@@ -1,6 +1,6 @@
 <?php
 
-namespace Auth\Controllers;
+namespace App\Controllers\Auth;
 
 use App\Models\UserModel;
 use CodeIgniter\Controller;
@@ -31,7 +31,7 @@ class AccountController extends Controller
         $this->session = Services::session();
 
         // load auth settings
-        $this->config = config('Auth');
+        $this->config = config('App');
     }
 
     //--------------------------------------------------------------------
@@ -66,8 +66,8 @@ class AccountController extends Controller
         $getRule = $users->getRule('updateAccount');
         $users->setValidationRules($getRule);
         $user = [
-            'id'   => $this->session->get('userData.id'),
-            'name' => $this->request->getPost('name')
+            'user_id' => $this->session->get('userData.user_id'),
+            'name'    => $this->request->getPost('name')
         ];
 
         if (!$users->save($user)) {
@@ -91,7 +91,7 @@ class AccountController extends Controller
 
         // check password
         $users = new UserModel();
-        $user = $users->find($this->session->get('userData.id'));
+        $user = $users->find($this->session->get('userData.user_id'));
         if (empty($this->request->getPost('password'))
             || !password_verify($this->request->getPost('password'), $user['password_hash'])
         ) {
@@ -102,7 +102,7 @@ class AccountController extends Controller
         $getRule = $users->getRule('changeEmail');
         $users->setValidationRules($getRule);
         $updatedUser = [
-            'id'            => $this->session->get('userData.id'),
+            'user_id'       => $this->session->get('userData.user_id'),
             'new_email'     => $this->request->getPost('new_email'),
             'activate_hash' => random_string('alnum', 32),
         ];
@@ -140,7 +140,7 @@ class AccountController extends Controller
         }
 
         // set new email as current
-        $updatedUser['id'] = $user['id'];
+        $updatedUser['user_id'] = $user['user_id'];
         $updatedUser['email'] = $user['new_email'];
         $updatedUser['new_email'] = NULL;
         $updatedUser['activate_hash'] = NULL;
@@ -181,7 +181,7 @@ class AccountController extends Controller
 
         // check current password
         $users = new UserModel();
-        $user = $users->find($this->session->get('userData.id'));
+        $user = $users->find($this->session->get('userData.user_id'));
 
         if (!$user
             || !password_verify($this->request->getPost('password'), $user['password_hash'])
@@ -190,7 +190,7 @@ class AccountController extends Controller
         }
 
         // update user's password
-        $updatedUser['id'] = $this->session->get('userData.id');
+        $updatedUser['user_id'] = $this->session->get('userData.user_id');
         $updatedUser['password'] = $this->request->getPost('new_password');
         $users->save($updatedUser);
 
@@ -207,7 +207,7 @@ class AccountController extends Controller
     {
         // check current password
         $users = new UserModel();
-        $user = $users->find($this->session->get('userData.id'));
+        $user = $users->find($this->session->get('userData.user_id'));
 
         if (!$user
             || !password_verify($this->request->getPost('password'), $user['password_hash'])
@@ -216,7 +216,7 @@ class AccountController extends Controller
         }
 
         // delete account from DB
-        $users->delete($this->session->get('userData.id'));
+        $users->delete($this->session->get('userData.user_id'));
 
         // log out user
         $this->session->remove([
