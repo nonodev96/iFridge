@@ -10,9 +10,6 @@
         <div class="row">
             <div class="col-lg-12">
                 <?php
-var_dump($_SESSION);
-                ?>
-                <?php
                 $iterator = [
                     'Users'     => $users ?? [],
                     'Tags'      => $tags ?? [],

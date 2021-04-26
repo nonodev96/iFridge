@@ -63,3 +63,14 @@ header {
     font-weight: 600;
     text-decoration: none;
 }
+
+
+/**
+ *
+ */
+
+.box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

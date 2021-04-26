@@ -7,22 +7,25 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= site_url('mqtt') ?>">Mqtt</a>
+                    <a class="nav-link" href="<?= site_url('Mqtt') ?>">Mqtt</a>
                 </li>
                 <?php if (session('isLoggedIn')): ?>
                     <li class="nav-item">
-                        <a href="<?= site_url('QR_Controller') ?>" class="nav-link">QR_Controller</a>
+                        <a class="nav-link" href="<?= site_url('Calendar') ?>">Calendar</a>
                     </li>
                     <li class="nav-item">
-                        <a href="<?= site_url('Inventory') ?>" class="nav-link">Inventory</a>
+                        <a class="nav-link" href="<?= site_url('Tags') ?>">Tags</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= site_url('Inventory') ?>">Inventory</a>
                     </li>
                     <?php if (session('userData')['role']): ?>
                         <li class="nav-item">
-                            <a href="<?= site_url('admin') ?>" class="nav-link">Admin</a>
+                            <a class="nav-link" href="<?= site_url('admin') ?>">Admin</a>
                         </li>
                     <?php endif; ?>
                 <?php endif; ?>

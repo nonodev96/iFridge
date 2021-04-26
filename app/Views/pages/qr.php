@@ -7,6 +7,17 @@
 <?= $this->section('content') ?>
 <div class="container">
     <div class="row">
+        <div class="col-md-8">
+            <h3>Tags</h3>
+        </div>
+        <div class="col-md-4 float-right">
+            <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#modal-add-qr">
+                Generar QR
+            </button>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
         <div class="col-md-12">
             <div id="loadingMessage">🎥 <?= lang('iFridge.unable_to_access_video_stream') ?></div>
             <canvas id="canvas" hidden></canvas>
@@ -17,9 +28,7 @@
         </div>
         <div class="col-md-12" style="margin-top: 1em">
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add-qr">
-                Generar QR
-            </button>
+
         </div>
 
         <div class="col-md-12" style="margin-top: 1em">
@@ -36,11 +45,17 @@
                     <tr>
                         <td><?= $qr['tag_id'] ?></td>
                         <td><?= $qr['label'] ?></td>
-                        <td><img src="<?= $qr['url'] ?>" class="img-thumbnail" alt=""></td>
+                        <td><img src="<?= $qr['url'] ?>" data-tagID="<?= $qr['tag_id'] ?>" class="img-thumbnail" alt="">
+                        </td>
                         <td>
-                            <form action="<?= site_url('QR_Controller/delete') ?>" method="post">
+                            <button class="btn btn-block btn-outline-warning" data-tagID="<?= $qr['tag_id'] ?>">
+                                <?= lang('Form.print') ?>
+                            </button>
+                            <hr>
+                            <form action="<?= site_url('Tags/delete') ?>" method="post">
                                 <input type="hidden" name="tag_id" value="<?= $qr['tag_id'] ?>">
-                                <input type="submit" class="btn btn-danger" value="Delete">
+                                <input type="submit" class="btn btn-block btn-outline-danger"
+                                       value="<?= lang('Form.delete') ?>">
                             </form>
                         </td>
                     </tr>
@@ -59,4 +74,25 @@
 <?php $this->section('scripts') ?>
 <script src="/assets/plugins/jsQR-master/dist/jsQR.js"></script>
 <script src="/assets/js/qr.codeigniter.js"></script>
+<script>
+    function printImage(image) {
+        let printWindow = window.open("", "Print Window", "height=400,width=600");
+        printWindow.document.write("<html><head><title>Print Window</title>");
+        printWindow.document.write("</head><body ><img alt='image' src='");
+        printWindow.document.write(image.src);
+        printWindow.document.write("' /></body></html>");
+        printWindow.document.close();
+        printWindow.print();
+    }
+
+    const buttons_print = document.querySelectorAll('button[data-tagID]');
+    buttons_print.forEach((button, key) => {
+        button.addEventListener('click', () => {
+            const tag_id = button.dataset.tagid;
+            const img = document.querySelectorAll(`img[data-tagID="${tag_id}"]`)[0];
+            console.log(img)
+            printImage(img);
+        })
+    });
+</script>
 <?php $this->endSection() ?>

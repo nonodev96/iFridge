@@ -10,7 +10,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="<?= site_url('QR_Controller/insert') ?>" method="post">
+                <form action="<?= site_url('Tags/insert') ?>" method="post">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="label_id">Text</label>

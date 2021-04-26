@@ -16,9 +16,10 @@ class InventoryModel extends Model
     protected $protectFields    = true;
     protected $allowedFields    = [
         'id',
-        'user_id',
         'tag_id',
+        'user_id',
         'name',
+        'amount',
         'start_date',
         'end_date',
     ];
@@ -31,7 +32,14 @@ class InventoryModel extends Model
     protected $deletedField  = 'deleted_at';
 
     // Validation
-    protected $validationRules      = [];
+    protected $validationRules      = [
+        'tag_id'     => 'required|numeric',
+        'user_id'    => 'required|numeric',
+        'name'       => 'required|alpha_numeric_space',
+        'amount'     => 'required|numeric',
+        'start_date' => 'required|regex_match[([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))]',
+        'end_date'   => 'required|regex_match[([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))]',
+    ];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
@@ -53,14 +61,17 @@ class InventoryModel extends Model
         return $this->findAll();
     }
 
-    function exist_tag($key): bool
+    function getAllElementsBy($key, $value): array
     {
-        $this->where('label', $key);
-        if ($this->countAllResults() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->where($key, $value)->findAll();
+    }
+
+    function exist_element($user_id, $key): bool
+    {
+        return $this
+                ->where('name', $key)
+                ->where('user_id', $user_id)
+                ->countAllResults() > 0;
     }
 
 
@@ -68,8 +79,8 @@ class InventoryModel extends Model
     {
         $status = false;
         try {
-            if (!$this->exist_tag($data['label'])) {
-                $status = $this->insert($data);
+            if (!$this->exist_element($data['user_id'], $data['name'])) {
+                $status = $this->save($data);
             }
         } catch (\ReflectionException $e) {
             var_dump($e);
@@ -86,9 +97,11 @@ class InventoryModel extends Model
         }
     }
 
-    function delete__object($id)
+    function delete_object($id): bool
     {
-        $this->where($this->primaryKey, $id)->delete($id);
+        if ($this->where('id', $id)->countAllResults() > 0)
+            return $this->where($this->primaryKey, $id)->delete() !== false;
+        return false;
     }
 
 }

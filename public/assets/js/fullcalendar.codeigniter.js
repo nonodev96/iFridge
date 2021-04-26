@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
-            events: "/fullcalendar/load",
+            events: "/Calendar/load",
             selectable: true,
             selectHelper: true,
 
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
                     $.ajax({
-                        url: "/fullcalendar/insert",
+                        url: "/Calendar/insert",
                         type: "POST",
                         data: {
                             title: title,
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         },
                         success: function () {
                             calendar.refetchEvents();
-                            alert("Added Successfully");
+                            // alert("Added Successfully");
                         }
                     })
                 }
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     },
                     success: function () {
                         calendar.refetchEvents();
-                        alert("Event Update");
+                        // alert("Event Update");
                     }
                 })
             },
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     },
                     success: function () {
                         calendar.refetchEvents();
-                        alert("Event Updated");
+                        // alert("Event Updated");
                     }
                 })
             },
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         },
                         success: function () {
                             calendar.refetchEvents();
-                            alert('Event Removed');
+                            // alert('Event Removed');
                         }
                     })
                 }

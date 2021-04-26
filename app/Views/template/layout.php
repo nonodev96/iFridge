@@ -16,6 +16,8 @@
 
 <?= $this->include('template/header') ?>
 
+<?= $this->include('template/notifications') ?>
+
 <main role="main">
     <?php $this->renderSection('content') ?>
 </main>

@@ -16,7 +16,7 @@ class Home extends BaseController
 
     public function index(): string
     {
-        view("pages/calendar");
+        view("pages/house");
         return view("template/layout");
     }
 
