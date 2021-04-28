@@ -1,9 +1,7 @@
 /**
-   BasicHTTPSClient.ino
-
-    Created on: 20.08.2018
-
-*/
+ * BasicHTTPSClient.ino
+ * Created on: 20.08.2018
+ */
 
 #include <Arduino.h>
 
@@ -34,7 +32,7 @@ void setup() {
   }
 
   WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP("MiFibra-5B22", "nM25e3vM");
+  WiFiMulti.addAP("mi8nono", "sinpassword23");
 }
 
 void loop() {

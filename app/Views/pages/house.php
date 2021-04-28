@@ -104,7 +104,7 @@
                 this.templateContent = this.template.content;
 
                 this.attachShadow({mode: 'open'})
-                    .appendChild(this.templateContent.cloneNode(true))
+                    .appendChild(this.templateContent.cloneNode(true));
                 this.init();
             }
 

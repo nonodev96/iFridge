@@ -36,6 +36,15 @@ $routes->match(['get'], 'admin', 'Admin::index', ['filter' => 'auth_filter']);
 //$routes->group('admin', function ($routes) {
 //    $routes->get('/', 'Admin\Admin::index');
 //});
+$routes->get('mqtt', 'Mqtt::index');
+$routes->get('calendar', 'Calendar::index');
+$routes->get('mqtt', 'Mqtt::index');
+$routes->get('inventory', 'Inventory::index');
+$routes->get('tags', 'Tags::index');
+
+$routes->cli('cron', 'Cron::index');
+$routes->get('admin', 'Admin::index');
+
 $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     // Registration
     $routes->get('register', 'Auth\RegistrationController::register', ['as' => 'register']);
@@ -62,8 +71,7 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('confirm-email', 'Auth\AccountController::confirmNewEmail');
     $routes->post('change-password', 'Auth\AccountController::changePassword');
     $routes->post('delete-account', 'Auth\AccountController::deleteAccount');
-}
-);
+});
 
 /*
  * --------------------------------------------------------------------
