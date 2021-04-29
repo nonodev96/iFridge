@@ -18,18 +18,6 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-md-12">
-            <div id="loadingMessage">🎥 <?= lang('iFridge.unable_to_access_video_stream') ?></div>
-            <canvas id="canvas" hidden></canvas>
-            <div id="output" hidden>
-                <div id="outputMessage">No QR code detected.</div>
-                <div hidden><b>Data:</b> <span id="outputData"></span></div>
-            </div>
-        </div>
-        <div class="col-md-12" style="margin-top: 1em">
-            <!-- Button trigger modal -->
-
-        </div>
 
         <div class="col-md-12" style="margin-top: 1em">
             <table class="table">

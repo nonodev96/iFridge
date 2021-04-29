@@ -13,6 +13,16 @@
 
                 <?= form_open('Inventory/insert', 'method="post"') ?>
                 <div class="modal-body">
+
+                    <div class="flex-center">
+                        <div id="loadingMessage">🎥 <?= lang('iFridge.unable_to_access_video_stream') ?></div>
+                        <canvas id="canvas" hidden></canvas>
+                    </div>
+                    <div id="output" hidden>
+                        <div id="outputMessage">No QR code detected.</div>
+                        <div hidden><b>Data:</b> <span id="outputData"></span></div>
+                    </div>
+
                     <input type="hidden" id="user_id" name="user_id" value="<?= $user_id ?? "" ?>">
 
                     <div class="form-group">

@@ -6,10 +6,10 @@ use CodeIgniter\Model;
 
 class UserModel extends Model
 {
-    protected $table      = 'users';
+    protected $table = 'users';
     protected $primaryKey = 'user_id';
 
-    protected $returnType     = 'array';
+    protected $returnType = 'array';
     protected $useSoftDeletes = false;
 
     // this happens first, model removes all other fields from input data
@@ -27,27 +27,27 @@ class UserModel extends Model
     ];
 
     protected $useTimestamps = true;
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $dateFormat    = 'int';
+    protected $createdField = 'created_at';
+    protected $updatedField = 'updated_at';
+    protected $dateFormat = 'int';
 
     protected $validationRules = [];
 
     // we need different rules for registration, account update, etc
     protected $dynamicRules = [
-        'registration'  => [
-            'name'             => 'required|min_length[2]',
-            'email'            => 'required|valid_email|is_unique[users.email]',
-            'password'         => 'required|min_length[5]',
+        'registration' => [
+            'name' => 'required|min_length[2]',
+            'email' => 'required|valid_email|is_unique[users.email]',
+            'password' => 'required|min_length[5]',
             'password_confirm' => 'matches[password]'
         ],
         'updateAccount' => [
             'user_id' => 'required|is_natural_no_zero',
-            'name'    => 'required|min_length[2]'
+            'name' => 'required|min_length[2]'
         ],
-        'changeEmail'   => [
-            'user_id'       => 'required|is_natural_no_zero',
-            'new_email'     => 'required|valid_email|is_unique[users.email]',
+        'changeEmail' => [
+            'user_id' => 'required|is_natural_no_zero',
+            'new_email' => 'required|valid_email|is_unique[users.email]',
             'activate_hash' => 'required'
         ]
     ];
@@ -62,6 +62,11 @@ class UserModel extends Model
 
 
     //--------------------------------------------------------------------
+
+    public function getUserBy(string $key, $value): array
+    {
+        return $this->where($key, $value)->limit(1)->find();
+    }
 
     /**
      * Retrieves validation rule

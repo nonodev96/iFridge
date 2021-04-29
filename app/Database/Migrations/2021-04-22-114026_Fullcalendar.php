@@ -14,6 +14,10 @@ class Fullcalendar extends Migration
                 'constraint'     => 11,
                 'auto_increment' => true
             ],
+            'user_id'   => [
+                'type'       => 'int',
+                'constraint' => 11,
+            ],
             'title'       => [
                 'type'       => 'varchar',
                 'constraint' => 255
@@ -22,6 +26,7 @@ class Fullcalendar extends Migration
             'end_event'   => ['type' => 'datetime'],
         ]);
         $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('user_id', 'users', 'user_id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('full_calendar', true);
     }
 

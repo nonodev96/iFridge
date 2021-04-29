@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Auth;
 
+use App\Models\HouseModel;
 use CodeIgniter\Controller;
 use Config\Email;
 use Config\Services;
@@ -80,6 +81,8 @@ class LoginController extends Controller
         if (!$user['active']) {
             return redirect()->to('login')->withInput()->with('error', lang('Auth.notActivated'));
         }
+        $house_model = new HouseModel();
+        $house = $house_model->where('user_id', $user['user_id'])->first();
 
         // login OK, save user data to session
         $this->session->set('isLoggedIn', true);
@@ -89,6 +92,12 @@ class LoginController extends Controller
             'email'     => $user['email'],
             'new_email' => $user['new_email'],
             'role'      => $user['role'],
+        ]);
+        $this->session->set('houseData', [
+            'user_id' => $house['user_id'],
+            'name'    => $house['name'],
+            'broker'  => $house['broker'],
+            'port'    => $house['port'],
         ]);
 
         return redirect()->to('account');

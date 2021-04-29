@@ -9,6 +9,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1>Websockets MQTT Monitor</h1>
+                <p>https://www.emqx.io/mqtt/public-mqtt5-broker</p>
             </div>
         </div>
         <div class="row">

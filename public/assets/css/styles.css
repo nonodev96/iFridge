@@ -74,3 +74,15 @@ header {
     align-items: center;
     justify-content: center;
 }
+
+#canvas {
+    height: 25em;
+    width: auto;
+}
+
+.flex-center {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}

@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Auth;
 
+use App\Models\HouseModel;
 use CodeIgniter\Controller;
 use CodeIgniter\Session\Session;
 use Config\Email;
@@ -70,6 +71,14 @@ class RegistrationController extends Controller
         ];
 
         if (!$users->save($user)) {
+            $data_user = $users->getUserBy('email', $user['email']);
+            $house_model = new HouseModel();
+            $house = [
+                'user_id' => $data_user['user_id'],
+                'name'    => $data_user['name']
+            ];
+            $house_model->save($house);
+
             return redirect()->back()->withInput()->with('errors', $users->errors());
         }
 

@@ -15,7 +15,9 @@ class FullCalendarModel extends Model
     protected $useSoftDelete    = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
+        'id',
         'title',
+        'user_id',
         'start_event',
         'end_event'
     ];
@@ -47,6 +49,11 @@ class FullCalendarModel extends Model
     function fetch_all_event(): array
     {
         return $this->findAll();
+    }
+
+    public function getAllElementsBy(string $key, $value): array
+    {
+        return $this->where($key, $value)->findAll();
     }
 
     function insert_event($data)

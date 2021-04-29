@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const outputContainer = document.getElementById("output");
     const outputMessage = document.getElementById("outputMessage");
     const outputData = document.getElementById("outputData");
+    const list_tags = document.getElementById('tag_id');
+    const qr_id = document.getElementById('qr_id');
 
     function drawLine(begin, end, color) {
         canvas.beginPath();
@@ -48,10 +50,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 outputMessage.hidden = true;
                 outputData.parentElement.hidden = false;
                 outputData.innerText = code.data;
+
+                if (qr_id) {
+                    qr_id.value = outputData.innerText;
+                }
+
+                if (list_tags) {
+                    console.log(list_tags.options)
+                    for (let option of list_tags.options) {
+                        if (option.innerText === outputData.innerText) {
+                            option.selected = true
+                        }
+                    }
+                }
             } else {
                 outputMessage.hidden = false;
                 outputData.parentElement.hidden = true;
             }
+
         }
         requestAnimationFrame(tick);
     }

@@ -70,7 +70,7 @@ class Users extends Migration
         $this->forge->createTable('users', true);
 
         $this->db->query(
-            <<<EOC
+<<<EOC
 INSERT INTO `users` (`user_id`, `email`, `new_email`, `password_hash`, `name`, `activate_hash`, `reset_hash`, `reset_expires`, `active`, `role`, `created_at`, `updated_at`) VALUES
 (1, 'nonodev96@gmail.com', NULL, '$2y$10\$q29owR6dzaZWb3C8kzUxoOJHe4q72LINBw5tPSJuFf90QLkn14S7W', 'Antonio Mudarra Machuca', 'Op9SWeqkrncPzDH2aLV4UFX3TZYwt5ul', NULL, NULL, 1, 1, 1619205036, 1619205052);
 EOC

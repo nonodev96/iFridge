@@ -48,8 +48,9 @@ class AccountController extends Controller
         return view(
             $this->config->views['account'],
             [
-                'userData' => $this->session->userData,
-                'config'   => $this->config
+                'userData'  => $this->session->userData,
+                'houseData' => $this->session->houseData,
+                'config'    => $this->config
             ]
         );
     }

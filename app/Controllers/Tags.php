@@ -14,6 +14,7 @@ class Tags extends BaseController
     public function __construct()
     {
         parent::__construct();
+        $this->helpers = ['form'];
         $this->tag_model = new TagModel();
     }
 

@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const calendarEl = document.getElementById('calendar');
+
+    const element = document.querySelector('meta[property~="user_id"]');
+    const user_id = element && element.getAttribute("content");
+
     if (calendarEl != null) {
         const calendar = new FullCalendar.Calendar(calendarEl, {
             locale: 'es',
@@ -20,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
-            events: "/Calendar/load",
+            events: "/Calendar/load/" + user_id,
             selectable: true,
             selectHelper: true,
 
@@ -32,11 +36,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     start.setDate(start.getDate() + 1);
                     let end = new Date(event.end != null ? event.end : start)
 
-
                     $.ajax({
                         url: "/Calendar/insert",
                         type: "POST",
                         data: {
+                            user_id: user_id,
                             title: title,
                             start: dateFormat(start),
                             end: dateFormat(end)
@@ -57,13 +61,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 const id = info.event.id;
 
                 $.ajax({
-                    url: "fullcalendar/update",
+                    url: "/Calendar/update",
                     type: "POST",
                     data: {
+                        id: id,
+                        user_id: user_id,
                         title: title,
                         start: start,
                         end: end,
-                        id: id
                     },
                     success: function () {
                         calendar.refetchEvents();
@@ -80,13 +85,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 let end = new Date(info.event.end != null ? info.event.end : start)
 
                 $.ajax({
-                    url: "fullcalendar/update",
+                    url: "/Calendar/update",
                     type: "POST",
                     data: {
+                        id: id,
+                        user_id: user_id,
                         title: title,
                         start: dateFormat(start),
                         end: dateFormat(end),
-                        id: id
                     },
                     success: function () {
                         calendar.refetchEvents();
@@ -98,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (confirm("Estas seguro de que quieres eliminar este evento?")) {
                     const id = info.event.id;
                     $.ajax({
-                        url: "fullcalendar/delete",
+                        url: "/Calendar/delete",
                         type: "POST",
                         data: {
                             id: id

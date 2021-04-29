@@ -70,6 +70,8 @@
 
 <?php $this->section('scripts') ?>
     <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="/assets/plugins/jsQR-master/dist/jsQR.js"></script>
+    <script src="/assets/js/qr.codeigniter.js"></script>
     <script>
         $(document).ready(function () {
             $('#table_id-Inventory').DataTable();

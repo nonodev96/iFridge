@@ -21,16 +21,17 @@ class Calendar extends BaseController
         return view("template/layout");
     }
 
-    public function load(): \CodeIgniter\HTTP\ResponseInterface
+    public function load($user_id): \CodeIgniter\HTTP\ResponseInterface
     {
         $to_return = [];
-        $event_data = $this->fullCalendar_model->fetch_all_event();
+        $event_data = $this->fullCalendar_model->getAllElementsBy('user_id', $user_id);
         foreach ($event_data as $row) {
             $to_return[] = array(
-                'id'    => $row['id'],
-                'title' => $row['title'],
-                'start' => $row['start_event'],
-                'end'   => $row['end_event']
+                'id'        => $row['id'],
+                'user_id'   => $row['user_id'],
+                'title'     => $row['title'],
+                'start'     => $row['start_event'],
+                'end'       => $row['end_event']
             );
         }
         return $this->response->setJSON($to_return);
@@ -41,6 +42,7 @@ class Calendar extends BaseController
         $to_return = [];
         if ($this->request->getPost('title')) {
             $data = array(
+                'user_id'     => $this->request->getPost('user_id'),
                 'title'       => $this->request->getPost('title'),
                 'start_event' => $this->request->getPost('start'),
                 'end_event'   => $this->request->getPost('end')
@@ -58,6 +60,7 @@ class Calendar extends BaseController
         $to_return = [];
         if ($this->request->getPost('id')) {
             $data = array(
+                'user_id'     => $this->request->getPost('user_id'),
                 'title'       => $this->request->getPost('title'),
                 'start_event' => $this->request->getPost('start'),
                 'end_event'   => $this->request->getPost('end')
