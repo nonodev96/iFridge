@@ -49,9 +49,34 @@
 
         <label class="house-label" for="range" id="label">Rooms</label>
         <input type="range" min="3" max="6" step="1" value="6" id="range">
-
     </template>
     <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Code</h3>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-9">
+                <div id="blocklyDiv" style="height: 500px;"></div>
+            </div>
+            <div class="col-md-3">
+                <div id="saveButton" class="btn btn-block btn-outline-primary">Save</div>
+                <div id="playButton" class="btn btn-block btn-outline-success">Play</div>
+                <div id="codeDiv" class="main output-panel">
+                    <div class="form-group" hidden>
+                        <label for="languageDropdown">Language:</label>
+                        <select id="languageDropdown" class="form-control" onChange="myUpdateFunction();">
+                            <option value="JavaScript">JavaScript</option>
+                        </select>
+                    </div>
+                    <hr class="POps">
+                    <pre translate="no" dir="ltr"></pre>
+                </div>
+            </div>
+        </div>
+        <br>
         <div class="row">
             <div class="col-md-12">
                 <h3>House</h3>
@@ -59,35 +84,12 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3"></div>
             <div class="col-md-6">
                 <div class="box">
                     <custom-house></custom-house>
                 </div>
             </div>
-            <div class="col-md-3">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <h4>Sensors</h4>
-                <hr>
-                <div id="sensors">
-                    <p>Temperature 1 <span data-sensors="/topic/nonodev96_1"></span></p>
-                    <p>Temperature 2 <span data-sensors="/topic/nonodev96_2"></span></p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div id="out_messages"></div>
-            </div>
-            <div class="col-md-4">
-                <div id="status"></div>
-            </div>
-            <div class="col-md-4">
-                <div id="status_messages"></div>
+            <div class="col-md-6">
             </div>
         </div>
     </div>
@@ -132,5 +134,12 @@
         window.customElements.define('custom-house', House);
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
-    <script src="/assets/js/mqtt-sensors.js"></script>
+
+    <script src="/assets/plugins/xmltojson.js"></script>
+    <script src="https://unpkg.com/blockly"></script>
+    <script src="/assets/plugins/blockly/javascript_compressed.js"></script>
+    <script src="/assets/plugins/blockly/acorn_interpreter.js"></script>
+    <script src="/assets/js/block_main.js"></script>
+
+    <script src="/assets/js/mqtt-house.js"></script>
 <?php $this->endSection() ?>
