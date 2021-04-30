@@ -8,9 +8,9 @@ if (!function_exists('send_activation_email')) {
      */
     function send_activation_email($to, $activateHash)
     {
-        $htmlMessage = view('Auth/emails\header');
-        $htmlMessage .= view('Auth/emails\activation', ['hash' => $activateHash]);
-        $htmlMessage .= view('Auth/emails\footer');
+        $htmlMessage = view('Auth/emails/header');
+        $htmlMessage .= view('Auth/emails/activation', ['hash' => $activateHash]);
+        $htmlMessage .= view('Auth/emails/footer');
 
         $email = \Config\Services::email();
         //		$email->initialize([
@@ -32,9 +32,9 @@ if (!function_exists('send_confirmation_email')) {
      */
     function send_confirmation_email($to, $activateHash)
     {
-        $htmlMessage = view('Auth/emails\header');
-        $htmlMessage .= view('Auth/emails\confirmation', ['hash' => $activateHash]);
-        $htmlMessage .= view('Auth/emails\footer');
+        $htmlMessage = view('Auth/emails/header');
+        $htmlMessage .= view('Auth/emails/confirmation', ['hash' => $activateHash]);
+        $htmlMessage .= view('Auth/emails/footer');
 
         $email = \Config\Services::email();
         //        $email->initialize([
@@ -57,9 +57,9 @@ if (!function_exists('send_notification_email')) {
      */
     function send_notification_email($to)
     {
-        $htmlMessage = view('Auth/emails\header');
-        $htmlMessage .= view('Auth/emails\notification');
-        $htmlMessage .= view('Auth/emails\footer');
+        $htmlMessage = view('Auth/emails/header');
+        $htmlMessage .= view('Auth/emails/notification');
+        $htmlMessage .= view('Auth/emails/footer');
 
         $email = \Config\Services::email();
 //        $email->initialize(
@@ -84,9 +84,9 @@ if (!function_exists('send_password_reset_email')) {
      */
     function send_password_reset_email($to, $resetHash)
     {
-        $htmlMessage = view('Auth/emails\header');
-        $htmlMessage .= view('Auth/emails\reset', ['hash' => $resetHash]);
-        $htmlMessage .= view('Auth/emails\footer');
+        $htmlMessage = view('Auth/emails/header');
+        $htmlMessage .= view('Auth/emails/reset', ['hash' => $resetHash]);
+        $htmlMessage .= view('Auth/emails/footer');
         $email = \Config\Services::email();
 //        $email->initialize(
 //            [

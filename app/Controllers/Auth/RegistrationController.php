@@ -71,11 +71,12 @@ class RegistrationController extends Controller
         ];
 
         if (!$users->save($user)) {
+
             $data_user = $users->getUserBy('email', $user['email']);
             $house_model = new HouseModel();
             $house = [
-                'user_id' => $data_user['user_id'],
-                'name'    => $data_user['name']
+                'user_id' => $data_user[0]['user_id'],
+                'name'    => $data_user[0]['name']
             ];
             $house_model->save($house);
 
