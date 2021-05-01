@@ -50,15 +50,19 @@
         <label class="house-label" for="range" id="label">Rooms</label>
         <input type="range" min="3" max="6" step="1" value="6" id="range">
     </template>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
                 <h3>Code</h3>
                 <hr>
             </div>
+            <div class="col-md-1"></div>
         </div>
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-1"></div>
+
+            <div class="col-md-7">
                 <div id="blocklyDiv" style="height: 500px;"></div>
             </div>
             <div class="col-md-3">
@@ -75,8 +79,11 @@
                     <pre translate="no" dir="ltr"></pre>
                 </div>
             </div>
+            <div class="col-md-1"></div>
+
         </div>
-        <br>
+    </div>
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <h3>House</h3>
@@ -90,6 +97,11 @@
                 </div>
             </div>
             <div class="col-md-6">
+                <p>Sensor {{mqtt[$host][$port][$topic_1]}}</p>
+                <p>Sensor {{mqtt[$host][$port][$topic_2]}}</p>
+                <p>Sensor {{mqtt[$host][$port][$topic_3]}}</p>
+                <p>Sensor {{mqtt[$host][$port][$topic_4]}}</p>
+                <p>Sensor {{mqtt[$host][$port][$topic_5]}}</p>
             </div>
         </div>
     </div>
@@ -139,7 +151,9 @@
     <script src="https://unpkg.com/blockly"></script>
     <script src="/assets/plugins/blockly/javascript_compressed.js"></script>
     <script src="/assets/plugins/blockly/acorn_interpreter.js"></script>
+    <script src="/assets/plugins/mqtt-blockly/blocks_mqtt.js" type="module"></script>
+    <script src="/assets/plugins/mqtt-blockly/generators_mqtt.js" type="module"></script>
     <script src="/assets/js/block_main.js"></script>
-
     <script src="/assets/js/mqtt-house.js"></script>
+
 <?php $this->endSection() ?>

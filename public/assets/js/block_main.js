@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', function () {
     <category id="catMqtt" colour="red" name="MQTT-UJAEN">
           <block type="mqtt_send"></block>
           <block type="mqtt_subs"></block>
+<!--        <block type="mqtt_block"></block>-->
+<!--        <block type="mqtt_connect_block"></block>-->
+<!--        <block type="mqtt_publish_block"></block>-->
+<!--        <block type="mqtt_subscribe_block"></block>-->
     </category>
     <sep></sep>
     <category id="catLogic" colour="210" name="Logic">
@@ -320,38 +324,50 @@ document.addEventListener('DOMContentLoaded', function () {
         Blockly.Blocks['mqtt_send'] = {
             init: function () {
                 this.jsonInit({
-                    "message0": "MQTT SEND Broker %1:%2 topic: %3 msg: %4",
+                    "type": "mqtt_send",
+                    "message0": "MQTT SEND %1:%2 topic: %3 msg: %4",
                     "args0": [
                         {
                             "type": "field_variable",
-                            "name": "broker_host_VAR",
-                            "variable": "Host",
+                            "name": "mqtt_send_host",
+                            "variable": "send_Host",
                             "variableTypes": [""]
                         },
                         {
                             "type": "field_variable",
-                            "name": "broker_port_VAR",
-                            "variable": "Port",
+                            "name": "mqtt_send_port",
+                            "variable": "send_Port",
                             "variableTypes": [""]
                         },
                         {
                             "type": "field_variable",
-                            "name": "Topic_TEXT",
-                            "variable": "Topic",
+                            "name": "mqtt_send_topic",
+                            "variable": "send_Topic",
                             "variableTypes": [""]
                         },
                         {
                             "type": "field_variable",
-                            "name": "Message_TEXT",
-                            "variable": "Message",
+                            "name": "mqtt_send_message",
+                            "variable": "send_Message",
                             "variableTypes": [""]
                         },
+
+                        // {
+                        //     "type": "input_statement",
+                        //     "name": "resolve"
+                        // },
+                        // {
+                        //     "type": "input_statement",
+                        //     "name": "reject"
+                        // }
+
+
                     ],
                     "previousStatement": null,
                     "nextStatement": null,
                     "colour": 230,
-                    "tooltip": 'Envia una peticion mqtt a la url X con puerto Y',
-                    "helpUrl": 'http://www.w3schools.com/jsref/jsref_length_string.asp'
+                    "tooltip": 'Envia una peticion mqtt',
+                    "helpUrl": ''
                 });
             }
         };
@@ -359,42 +375,70 @@ document.addEventListener('DOMContentLoaded', function () {
         Blockly.Blocks['mqtt_subs'] = {
             init: function () {
                 this.jsonInit({
-                    "message0": "MQTT Subs Broker %1:%2 topic: %3",
+                    "type": "mqtt_subs",
+                    "message0": "mqtt_sub %1 %2 %3 %4 %5",
                     "args0": [
                         {
                             "type": "field_variable",
-                            "name": "broker_host_VAR",
-                            "variable": "Host",
-                            "variableTypes": [""]
+                            "name": "mqtt_subs_HOST",
+                            "variable": "host"
                         },
                         {
                             "type": "field_variable",
-                            "name": "broker_port_VAR",
-                            "variable": "Port",
-                            "variableTypes": [""]
+                            "name": "mqtt_subs_PORT",
+                            "variable": "port"
                         },
                         {
                             "type": "field_variable",
-                            "name": "Topic_TEXT",
-                            "variable": "Topic",
-                            "variableTypes": [""]
+                            "name": "mqtt_subs_TOPIC",
+                            "variable": "topic"
+                        },
+                        {
+                            "type": "input_statement",
+                            "name": "resolve"
+                        },
+                        {
+                            "type": "input_statement",
+                            "name": "reject"
                         }
                     ],
                     "previousStatement": null,
                     "nextStatement": null,
                     "colour": 230,
-                    "tooltip": 'Envia una peticion mqtt a la url X con puerto Y',
-                    "helpUrl": 'http://www.w3schools.com/jsref/jsref_length_string.asp'
+                    "tooltip": "",
+                    "helpUrl": ""
                 });
             }
         };
 
         Blockly.JavaScript['mqtt_send'] = function (block) {
-            return 'mqtt_send(Host, Port, Topic, Message);\n';
+            const text_host = block.getField('mqtt_send_host').getText();
+            const text_port = block.getField('mqtt_send_port').getText();
+            const text_topic = block.getField('mqtt_send_topic').getText();
+            const text_message = block.getField('mqtt_send_message').getText();
+
+            // const statements_resolve = Blockly.JavaScript.statementToCode(block, 'resolve');
+            // const statements_reject = Blockly.JavaScript.statementToCode(block, 'reject');
+
+            return `mqtt_send(${text_host}, ${text_port}, ${text_topic}, ${text_message});\n`;
         };
 
         Blockly.JavaScript['mqtt_subs'] = function (block) {
-            return 'mqtt_subs(Host, Port, Topic);\n';
+            const text_host = block.getField('mqtt_subs_HOST').getText();
+            const text_port = block.getField('mqtt_subs_PORT').getText();
+            const text_topic = block.getField('mqtt_subs_TOPIC').getText();
+
+            const statements_resolve = Blockly.JavaScript.statementToCode(block, 'resolve');
+            const statements_reject = Blockly.JavaScript.statementToCode(block, 'reject');
+
+            return `mqtt_subs(${text_host}, ${text_port}, ${text_topic}, 
+(resolve) => {
+${statements_resolve}
+},
+(reject) => {
+${statements_reject}
+});
+`;
         };
 
     }
@@ -412,22 +456,31 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
+    function asyncFunctions(interpreter, scope) {
+        Blockly.JavaScript.addReservedWords('mqtt_send');
+
+        const mqttWrapper = interpreter.createAsyncFunction(
+            function (Host, Port, Topic, Message, callback) {
+                console.log(Host);
+                mqtt_send(Host, Port, Topic, Message)
+                    .then((ok, re) => {
+                        console.log('ok', ok);
+                        setTimeout(callback, 1000);
+                    });
+            });
+
+
+        interpreter.setProperty(scope, 'mqtt_send', mqttWrapper);
+    }
+
+    let myInterpreter = null;
+    let runner;
+
     function executeBlockCode() {
         const code = Blockly.JavaScript.workspaceToCode(workspace);
         const initFunc = function (interpreter, scope) {
 
-            const mqttWrapper = function (Host, Port, Topic, Message) {
-                return interpreter.createPrimitive(mqtt_send(Host, Port, Topic, Message));
-            };
-            interpreter.setProperty(scope, 'mqtt_send',
-                interpreter.createNativeFunction(mqttWrapper));
-
-
-            const mqttSubsWrapper = function (Host, Port, Topic, Message) {
-                return interpreter.createPrimitive(mqtt_subs(Host, Port, Topic));
-            };
-            interpreter.setProperty(scope, 'mqtt_subs',
-                interpreter.createNativeFunction(mqttSubsWrapper));
+            asyncFunctions(interpreter, scope);
 
             const alertWrapper = function (text) {
                 text = text ? text.toString() : '';
@@ -443,13 +496,42 @@ document.addEventListener('DOMContentLoaded', function () {
             interpreter.setProperty(scope, 'prompt',
                 interpreter.createNativeFunction(promptWrapper));
         };
-        const myInterpreter = new Interpreter(code, initFunc);
-        let stepsAllowed = 10000;
-        while (myInterpreter.step() && stepsAllowed) {
-            stepsAllowed--;
+
+        if (!myInterpreter) {
+            setTimeout(function() {
+
+                myInterpreter = new Interpreter(code, initFunc);
+                runner = function() {
+                    if (myInterpreter) {
+                        let hasMore = myInterpreter.run();
+                        if (hasMore) {
+                            // Execution is currently blocked by some async call.
+                            // Try again later.
+                            setTimeout(runner, 10);
+                        } else {
+                            // Program is complete.
+                            resetInterpreter();
+                        }
+                    }
+                };
+                runner();
+            }, 1);
         }
-        if (!stepsAllowed) {
-            throw EvalError('Infinite loop.');
+
+        // let stepsAllowed = 10000;
+        // while (myInterpreter.step() && stepsAllowed) {
+        //     stepsAllowed--;
+        // }
+        // if (!stepsAllowed) {
+        //     throw EvalError('Infinite loop.');
+        // }
+    }
+
+    function resetInterpreter() {
+        myInterpreter = null;
+        if (runner) {
+            clearTimeout(runner);
+            runner = null;
         }
     }
 
@@ -500,19 +582,33 @@ document.addEventListener('DOMContentLoaded', function () {
      * ========================================================================
      */
     function mqtt_subs(Host, Port, Topic, Message) {
+        console.log('hello mqtt_subs');
     }
 
     function mqtt_send(Host, Port, Topic, Message) {
-        const mqtt_conttroller = new MQTT_Controller();
-        mqtt_conttroller.MQTT_Connect(Host, Port).then((resolve, reject) => {
-            console.log("resolve", resolve, reject)
-            if (resolve === true) {
-                mqtt_conttroller.send_message(Topic, Message).then((resolve_message, reject_message) => {
-                    console.log(resolve_message)
+        return new Promise((send_resolve, send_reject) => {
+
+            console.log('hello mqtt_send');
+
+            const mqtt_controller = new MQTT_Controller();
+
+            mqtt_controller.MQTT_Connect(Host, Port)
+                .then((resolve, reject) => {
+                    console.log("resolve", resolve, reject)
+
+                    if (resolve === true) {
+                        mqtt_controller.send_message(Topic, Message)
+                            .then((resolve_message, reject_message) => {
+                                console.log(resolve_message);
+
+                                send_resolve(resolve_message)
+                            });
+                    }
                 });
-            }
+
+
+            console.log(Host, Port, Topic, Message);
         });
-        console.log(Host, Port, Topic, Message);
     }
 
     /**
