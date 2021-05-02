@@ -3,8 +3,10 @@ document.addEventListener('DOMContentLoaded', function () {
         `
 <xml id="toolbox" style="display: none">
     <category id="catMqtt" colour="red" name="MQTT-UJAEN">
+          <block type="mqtt_send_2"></block>
           <block type="mqtt_send"></block>
           <block type="mqtt_subs"></block>
+          <block type="wait_a_minute"></block>
 <!--        <block type="mqtt_block"></block>-->
 <!--        <block type="mqtt_connect_block"></block>-->
 <!--        <block type="mqtt_publish_block"></block>-->
@@ -321,11 +323,70 @@ document.addEventListener('DOMContentLoaded', function () {
     let workspace;
 
     function defineBlocks() {
+        Blockly.Blocks['wait_a_minute'] = {
+            init: function () {
+                this.jsonInit({
+                    "type": "wait_a_minute",
+                    "message0": "wait_a_minute",
+                    "args0": [
+                        // {
+                        //     "type": "field_input",
+                        //     "name": "send_HOST",
+                        //     "text": "host"
+                        // }
+                    ],
+                    "output": "Boolean",
+                    "colour": 230,
+                    "tooltip": "",
+                    "helpUrl": ""
+                });
+            }
+        };
+
+        Blockly.Blocks['mqtt_send_2'] = {
+            init: function () {
+                this.jsonInit({
+                    "type": "mqtt_send_2",
+                    "message0": "mqtt_send async - await %1 %2 %3 %4",
+                    "args0": [
+                        {
+                            "type": "field_input",
+                            "name": "HOST",
+                            "text": "host"
+                        },
+                        {
+                            "type": "field_input",
+                            "name": "PORT",
+                            "text": "port"
+                        },
+                        {
+                            "type": "field_input",
+                            "name": "TOPIC",
+                            "text": "topic"
+                        },
+                        {
+                            "type": "field_input",
+                            "name": "MESSAGE",
+                            "text": "message"
+                        },
+                        // {
+                        //     "type": "input_value",
+                        //     "name": "NAME"
+                        // }
+                    ],
+                    "output": "Boolean",
+                    "colour": 230,
+                    "tooltip": "",
+                    "helpUrl": ""
+                });
+            }
+        }
+
         Blockly.Blocks['mqtt_send'] = {
             init: function () {
                 this.jsonInit({
                     "type": "mqtt_send",
-                    "message0": "MQTT SEND %1:%2 topic: %3 msg: %4",
+                    "message0": "MQTT SEND delay %1:%2 topic: %3 msg: %4",
                     "args0": [
                         {
                             "type": "field_variable",
@@ -366,7 +427,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     "previousStatement": null,
                     "nextStatement": null,
                     "colour": 230,
-                    "tooltip": 'Envia una peticion mqtt',
+                    "tooltip": 'Envia una peticion MQTT',
                     "helpUrl": ''
                 });
             }
@@ -411,6 +472,15 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         };
 
+        /**
+         *
+         */
+        Blockly.JavaScript['wait_a_minute'] = function (block) {
+            const text_host = block.getField('send_HOST').getText();
+            console.log(text_host);
+            return [`wait_a_minute('${text_host}')`, Blockly.JavaScript.ORDER_NONE];
+        }
+
         Blockly.JavaScript['mqtt_send'] = function (block) {
             const text_host = block.getField('mqtt_send_host').getText();
             const text_port = block.getField('mqtt_send_port').getText();
@@ -421,6 +491,17 @@ document.addEventListener('DOMContentLoaded', function () {
             // const statements_reject = Blockly.JavaScript.statementToCode(block, 'reject');
 
             return `mqtt_send(${text_host}, ${text_port}, ${text_topic}, ${text_message});\n`;
+        };
+
+        Blockly.JavaScript['mqtt_send_2'] = function (block) {
+            const text_host = block.getFieldValue('HOST');
+            const text_port = block.getFieldValue('PORT');
+            const text_topic = block.getFieldValue('TOPIC');
+            const text_message = block.getFieldValue('MESSAGE');
+            // const value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
+
+            const code = `mqtt_send_2('${text_host}', ${text_port}, '${text_topic}', '${text_message}')`;
+            return [code, Blockly.JavaScript.ORDER_NONE];
         };
 
         Blockly.JavaScript['mqtt_subs'] = function (block) {
@@ -440,7 +521,6 @@ ${statements_reject}
 });
 `;
         };
-
     }
 
     function myUpdateFunction(event) {
@@ -455,22 +535,99 @@ ${statements_reject}
         //prettyPrint();
     }
 
+    /*
+        var MAX_ARGS = 100;
 
+        Interpreter.prototype.createAsyncFunctionVarArgs = function(func) {
+            var interpreter = this;
+            var asyncWrapper = function asyncWrapper() {
+                var args = [].slice.call(arguments);
+                var callback = args.pop();
+                var reversedArgs = args.slice().reverse();
+                // Remove all extra undefined from end of the args list
+                var firstDefinedItem = reversedArgs.findIndex(function(i) { return i !== undefined });
+                var trimmedArgs = firstDefinedItem < 0
+                    ? []
+                    : reversedArgs.slice(firstDefinedItem).reverse();
+                var nativeArgs = trimmedArgs.map(function(arg) {
+                    return interpreter.pseudoToNative(arg);
+                }).concat(callback);
+                func.apply(null, nativeArgs);
+            }
+            // All functions will have 100 arguments + 1 callback
+            Object.defineProperty(asyncWrapper, 'length', { value: MAX_ARGS + 1 });
+            return interpreter.createAsyncFunction(asyncWrapper);
+        };
+    */
     function asyncFunctions(interpreter, scope) {
         Blockly.JavaScript.addReservedWords('mqtt_send');
+        Blockly.JavaScript.addReservedWords('mqtt_send_2');
+        Blockly.JavaScript.addReservedWords('wait_a_minute');
+
+        function wait(ms) {
+            return new Promise(r => setTimeout(r, ms));
+        }
+
+        function mqtt_(Host, Port, Topic, Message) {
+            return new Promise((resolve) => {
+                let mqtt_controller = new MQTT_Controller();
+
+                mqtt_controller
+                    .MQTT_Connect(Host, Port).then((result, reject) => {
+
+                    if (result === true) {
+                        mqtt_controller.send_message(Topic, Message).then((result_, reject_) => {
+                            if (result_ === true) {
+
+                                resolve(true);
+
+                            } else {
+                                resolve(false);
+                                reject_(new Error("No se ha podido enviar el mensaje"));
+                            }
+                        });
+                    } else {
+                        resolve(false);
+                        reject(new Error("No se ha podido conectar"));
+                    }
+                });
+            });
+        }
+
+        /**
+         *
+         */
+        const waitWrapper = async function (callback) {
+            console.log('hello')
+            await wait(3000);
+            callback(false);
+        }
+        interpreter.setProperty(scope, 'wait_a_minute',
+            interpreter.createAsyncFunction(waitWrapper));
+
+        const mqtt_send_2_Wrapper = async function (Host, Port, Topic, Message, callback) {
+            console.log('mqtt_send_Wrapper')
+            const result = await mqtt_(Host, Port, Topic, Message);
+            console.log(result)
+            callback(result);
+        }
+        interpreter.setProperty(scope, 'mqtt_send_2',
+            interpreter.createAsyncFunction(mqtt_send_2_Wrapper));
 
         const mqttWrapper = interpreter.createAsyncFunction(
             function (Host, Port, Topic, Message, callback) {
-                console.log(Host);
+                // await new Promise((resolve, reject) => setTimeout(resolve, 1));
+                // console.log(Host);
                 mqtt_send(Host, Port, Topic, Message)
                     .then((ok, re) => {
-                        console.log('ok', ok);
+                        console.log('mqtt_ok', ok);
+
+                        // callback(ok)
                         setTimeout(callback, 1000);
                     });
             });
-
-
         interpreter.setProperty(scope, 'mqtt_send', mqttWrapper);
+
     }
 
     let myInterpreter = null;
@@ -478,30 +635,31 @@ ${statements_reject}
 
     function executeBlockCode() {
         const code = Blockly.JavaScript.workspaceToCode(workspace);
+        // let code = Blockly['JavaScript'].workspaceToCode(workspace).replace(/(?<=^|\n)function \w+\(.*\)/g, 'async $&');
         const initFunc = function (interpreter, scope) {
 
             asyncFunctions(interpreter, scope);
 
             const alertWrapper = function (text) {
                 text = text ? text.toString() : '';
-                return interpreter.createPrimitive(alert(text));
+                alert(text);
             };
             interpreter.setProperty(scope, 'alert',
                 interpreter.createNativeFunction(alertWrapper));
 
             const promptWrapper = function (text) {
                 text = text ? text.toString() : '';
-                return interpreter.createPrimitive(prompt(text));
+                return prompt(text);
+                // return interpreter.createPrimitive();
             };
             interpreter.setProperty(scope, 'prompt',
                 interpreter.createNativeFunction(promptWrapper));
         };
 
         if (!myInterpreter) {
-            setTimeout(function() {
-
+            setTimeout(function () {
                 myInterpreter = new Interpreter(code, initFunc);
-                runner = function() {
+                runner = function () {
                     if (myInterpreter) {
                         let hasMore = myInterpreter.run();
                         if (hasMore) {
@@ -601,13 +759,12 @@ ${statements_reject}
                             .then((resolve_message, reject_message) => {
                                 console.log(resolve_message);
 
-                                send_resolve(resolve_message)
+                                send_resolve(resolve_message);
                             });
                     }
                 });
 
 
-            console.log(Host, Port, Topic, Message);
         });
     }
 
@@ -650,6 +807,7 @@ ${statements_reject}
                     onFailure: (message) => {
                         console.log('failure')
                         resolve(false);
+                        reject(new Error("On Connection"));
                     },
                 });
 

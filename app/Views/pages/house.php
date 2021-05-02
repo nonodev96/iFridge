@@ -148,11 +148,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
 
     <script src="/assets/plugins/xmltojson.js"></script>
-    <script src="https://unpkg.com/blockly"></script>
+    <script src="https://unpkg.com/blockly/blockly.min.js"></script>
     <script src="/assets/plugins/blockly/javascript_compressed.js"></script>
-    <script src="/assets/plugins/blockly/acorn_interpreter.js"></script>
-    <script src="/assets/plugins/mqtt-blockly/blocks_mqtt.js" type="module"></script>
-    <script src="/assets/plugins/mqtt-blockly/generators_mqtt.js" type="module"></script>
+<!--    <script src="/assets/plugins/JS-Interpreter/acorn_interpreter.js"></script>-->
+    <script src="/assets/plugins/JS-Interpreter/acorn.js"></script>
+    <script src="/assets/plugins/JS-Interpreter/interpreter.js"></script>
+<!--    <script src="/assets/plugins/mqtt-blockly/blocks_mqtt.js" type="module"></script>-->
+<!--    <script src="/assets/plugins/mqtt-blockly/generators_mqtt.js" type="module"></script>-->
     <script src="/assets/js/block_main.js"></script>
     <script src="/assets/js/mqtt-house.js"></script>
 
