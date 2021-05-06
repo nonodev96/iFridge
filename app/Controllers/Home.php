@@ -20,5 +20,10 @@ class Home extends BaseController
         return view("template/layout");
     }
 
+    public function debug(): string
+    {
+        return view("template/debug");;
+    }
+
 
 }

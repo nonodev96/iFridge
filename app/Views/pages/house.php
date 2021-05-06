@@ -63,7 +63,7 @@
             <div class="col-md-1"></div>
 
             <div class="col-md-7">
-                <div id="blocklyDiv" style="height: 500px;"></div>
+                <div id="blocklyDiv" style="height: 650px;"></div>
             </div>
             <div class="col-md-3">
                 <div id="saveButton" class="btn btn-block btn-outline-primary">Save</div>
@@ -97,11 +97,11 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <p>Sensor {{mqtt[$host][$port][$topic_1]}}</p>
-                <p>Sensor {{mqtt[$host][$port][$topic_2]}}</p>
-                <p>Sensor {{mqtt[$host][$port][$topic_3]}}</p>
-                <p>Sensor {{mqtt[$host][$port][$topic_4]}}</p>
-                <p>Sensor {{mqtt[$host][$port][$topic_5]}}</p>
+                <p id="sensor_1">Sensor {{mqtt[$host][$port][$topic_1]}}</p>
+                <p id="sensor_2">Sensor {{mqtt[$host][$port][$topic_2]}}</p>
+                <p id="sensor_3">Sensor {{mqtt[$host][$port][$topic_3]}}</p>
+                <p id="sensor_4">Sensor {{mqtt[$host][$port][$topic_4]}}</p>
+                <p id="sensor_5">Sensor {{mqtt[$host][$port][$topic_5]}}</p>
             </div>
         </div>
     </div>
@@ -152,6 +152,7 @@
     <script src="/assets/plugins/blockly/javascript_compressed.js"></script>
 <!--    <script src="/assets/plugins/JS-Interpreter/acorn_interpreter.js"></script>-->
     <script src="/assets/plugins/JS-Interpreter/acorn.js"></script>
+    <script src="/assets/plugins/JS-Interpreter/interpreter.js"></script>
     <script src="/assets/plugins/JS-Interpreter/interpreter.js"></script>
 <!--    <script src="/assets/plugins/mqtt-blockly/blocks_mqtt.js" type="module"></script>-->
 <!--    <script src="/assets/plugins/mqtt-blockly/generators_mqtt.js" type="module"></script>-->

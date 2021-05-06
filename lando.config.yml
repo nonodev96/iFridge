@@ -1,0 +1,32 @@
+proxy: 'ON'
+proxyName: landoproxyhyperion5000gandalfedition
+proxyHttpPort: 80
+proxyHttpsPort: 443
+proxyHttpFallbacks:
+  - 8000
+  - 8080
+  - 8888
+  - 8008
+proxyHttpsFallbacks:
+  - 444
+  - 4433
+  - 4444
+  - 4443
+proxyDefaultCert: /certs/cert.crt
+proxyDefaultKey: /certs/cert.key
+proxyCommand:
+  - /entrypoint.sh
+  - '--log.level=DEBUG'
+  - '--api.insecure=true'
+  - '--api.dashboard=false'
+  - '--providers.docker=true'
+  - '--entrypoints.https.address=:443'
+  - '--entrypoints.http.address=:80'
+  - '--providers.docker.exposedbydefault=false'
+  - '--providers.file.directory=/lando/proxy/config'
+  - '--providers.file.watch=true'
+proxyCustom: {}
+proxyPassThru: true
+proxyBindAddress: 127.0.0.1
+proxyDomain: lndo.site
+domain: lndo.site

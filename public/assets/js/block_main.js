@@ -3,10 +3,11 @@ document.addEventListener('DOMContentLoaded', function () {
         `
 <xml id="toolbox" style="display: none">
     <category id="catMqtt" colour="red" name="MQTT-UJAEN">
-          <block type="mqtt_send_2"></block>
+          <block type="mqtt_send_async"></block>
           <block type="mqtt_send"></block>
           <block type="mqtt_subs"></block>
           <block type="wait_a_minute"></block>
+          <block type="wait_time"></block>
 <!--        <block type="mqtt_block"></block>-->
 <!--        <block type="mqtt_connect_block"></block>-->
 <!--        <block type="mqtt_publish_block"></block>-->
@@ -343,10 +344,30 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         };
 
-        Blockly.Blocks['mqtt_send_2'] = {
+        Blockly.Blocks['wait_time'] = {
             init: function () {
                 this.jsonInit({
-                    "type": "mqtt_send_2",
+                    "type": "wait_time",
+                    "message0": "wait_time %1 ms",
+                    "args0": [
+                        {
+                            "type": "field_input",
+                            "name": "TIME",
+                            "text": "time"
+                        }
+                    ],
+                    "output": "Boolean",
+                    "colour": 230,
+                    "tooltip": "",
+                    "helpUrl": ""
+                });
+            }
+        };
+
+        Blockly.Blocks['mqtt_send_async'] = {
+            init: function () {
+                this.jsonInit({
+                    "type": "mqtt_send_async",
                     "message0": "mqtt_send async - await %1 %2 %3 %4",
                     "args0": [
                         {
@@ -437,7 +458,7 @@ document.addEventListener('DOMContentLoaded', function () {
             init: function () {
                 this.jsonInit({
                     "type": "mqtt_subs",
-                    "message0": "mqtt_sub %1 %2 %3 %4 %5",
+                    "message0": "mqtt_sub %1 %2 %3 %4",
                     "args0": [
                         {
                             "type": "field_variable",
@@ -455,13 +476,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             "variable": "topic"
                         },
                         {
-                            "type": "input_statement",
-                            "name": "resolve"
+                            "type": "field_variable",
+                            "name": "mqtt_subs_SENSOR",
+                            "variable": "sensor",
                         },
-                        {
-                            "type": "input_statement",
-                            "name": "reject"
-                        }
                     ],
                     "previousStatement": null,
                     "nextStatement": null,
@@ -476,9 +494,12 @@ document.addEventListener('DOMContentLoaded', function () {
          *
          */
         Blockly.JavaScript['wait_a_minute'] = function (block) {
-            const text_host = block.getField('send_HOST').getText();
-            console.log(text_host);
-            return [`wait_a_minute('${text_host}')`, Blockly.JavaScript.ORDER_NONE];
+            return [`wait_a_minute()`, Blockly.JavaScript.ORDER_NONE];
+        }
+
+        Blockly.JavaScript['wait_time'] = function (block) {
+            const text_time = block.getField('TIME').getText();
+            return [`wait_time('${text_time}')`, Blockly.JavaScript.ORDER_NONE];
         }
 
         Blockly.JavaScript['mqtt_send'] = function (block) {
@@ -493,14 +514,14 @@ document.addEventListener('DOMContentLoaded', function () {
             return `mqtt_send(${text_host}, ${text_port}, ${text_topic}, ${text_message});\n`;
         };
 
-        Blockly.JavaScript['mqtt_send_2'] = function (block) {
+        Blockly.JavaScript['mqtt_send_async'] = function (block) {
             const text_host = block.getFieldValue('HOST');
             const text_port = block.getFieldValue('PORT');
             const text_topic = block.getFieldValue('TOPIC');
             const text_message = block.getFieldValue('MESSAGE');
             // const value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
 
-            const code = `mqtt_send_2('${text_host}', ${text_port}, '${text_topic}', '${text_message}')`;
+            const code = `mqtt_send_async('${text_host}', ${text_port}, '${text_topic}', '${text_message}')`;
             return [code, Blockly.JavaScript.ORDER_NONE];
         };
 
@@ -508,20 +529,16 @@ document.addEventListener('DOMContentLoaded', function () {
             const text_host = block.getField('mqtt_subs_HOST').getText();
             const text_port = block.getField('mqtt_subs_PORT').getText();
             const text_topic = block.getField('mqtt_subs_TOPIC').getText();
+            const var_sensor = block.getField('mqtt_subs_SENSOR').getText();
 
-            const statements_resolve = Blockly.JavaScript.statementToCode(block, 'resolve');
-            const statements_reject = Blockly.JavaScript.statementToCode(block, 'reject');
+            // const statements_resolve = Blockly.JavaScript.statementToCode(block, 'resolve');
+            // const statements_reject = Blockly.JavaScript.statementToCode(block, 'reject');
 
-            return `mqtt_subs(${text_host}, ${text_port}, ${text_topic}, 
-(resolve) => {
-${statements_resolve}
-},
-(reject) => {
-${statements_reject}
-});
-`;
+            const code = `mqtt_subs(${text_host}, ${text_port}, ${text_topic}, ${var_sensor});\n`;
+            return code;
         };
     }
+
 
     function myUpdateFunction(event) {
         const languageDropdown = document.getElementById('languageDropdown');
@@ -535,40 +552,18 @@ ${statements_reject}
         //prettyPrint();
     }
 
-    /*
-        var MAX_ARGS = 100;
-
-        Interpreter.prototype.createAsyncFunctionVarArgs = function(func) {
-            var interpreter = this;
-            var asyncWrapper = function asyncWrapper() {
-                var args = [].slice.call(arguments);
-                var callback = args.pop();
-                var reversedArgs = args.slice().reverse();
-                // Remove all extra undefined from end of the args list
-                var firstDefinedItem = reversedArgs.findIndex(function(i) { return i !== undefined });
-                var trimmedArgs = firstDefinedItem < 0
-                    ? []
-                    : reversedArgs.slice(firstDefinedItem).reverse();
-                var nativeArgs = trimmedArgs.map(function(arg) {
-                    return interpreter.pseudoToNative(arg);
-                }).concat(callback);
-                func.apply(null, nativeArgs);
-            }
-            // All functions will have 100 arguments + 1 callback
-            Object.defineProperty(asyncWrapper, 'length', { value: MAX_ARGS + 1 });
-            return interpreter.createAsyncFunction(asyncWrapper);
-        };
-    */
     function asyncFunctions(interpreter, scope) {
         Blockly.JavaScript.addReservedWords('mqtt_send');
-        Blockly.JavaScript.addReservedWords('mqtt_send_2');
+        Blockly.JavaScript.addReservedWords('mqtt_send_async');
         Blockly.JavaScript.addReservedWords('wait_a_minute');
+        Blockly.JavaScript.addReservedWords('wait_time');
+        Blockly.JavaScript.addReservedWords('mqtt_subs');
 
         function wait(ms) {
             return new Promise(r => setTimeout(r, ms));
         }
 
-        function mqtt_(Host, Port, Topic, Message) {
+        function mqtt_send_(Host, Port, Topic, Message) {
             return new Promise((resolve) => {
                 let mqtt_controller = new MQTT_Controller();
 
@@ -596,40 +591,87 @@ ${statements_reject}
 
         /**
          *
+         * @param callback
+         * @returns {Promise<void>}
          */
         const waitWrapper = async function (callback) {
-            console.log('hello')
-            await wait(3000);
-            callback(false);
+            await wait(60000);
+            callback(true);
         }
         interpreter.setProperty(scope, 'wait_a_minute',
             interpreter.createAsyncFunction(waitWrapper));
 
-        const mqtt_send_2_Wrapper = async function (Host, Port, Topic, Message, callback) {
-            console.log('mqtt_send_Wrapper')
-            const result = await mqtt_(Host, Port, Topic, Message);
-            console.log(result)
+        /**
+         *
+         * @param time
+         * @param callback
+         * @returns {Promise<void>}
+         */
+        const wait_time_Wrapper = async function (time, callback) {
+            await wait(time);
+            callback(true);
+        }
+        interpreter.setProperty(scope, 'wait_time',
+            interpreter.createAsyncFunction(wait_time_Wrapper));
+
+        /**
+         *
+         * @param Host
+         * @param Port
+         * @param Topic
+         * @param Message
+         * @param callback
+         * @returns {Promise<void>}
+         */
+        const mqtt_send_async_Wrapper = async function (Host, Port, Topic, Message, callback) {
+            const result = await mqtt_send_(Host, Port, Topic, Message);
             callback(result);
         }
-        interpreter.setProperty(scope, 'mqtt_send_2',
-            interpreter.createAsyncFunction(mqtt_send_2_Wrapper));
+        interpreter.setProperty(scope, 'mqtt_send_async',
+            interpreter.createAsyncFunction(mqtt_send_async_Wrapper));
 
-        const mqttWrapper = interpreter.createAsyncFunction(
-            function (Host, Port, Topic, Message, callback) {
-                // await new Promise((resolve, reject) => setTimeout(resolve, 1));
-                // console.log(Host);
-                mqtt_send(Host, Port, Topic, Message)
-                    .then((ok, re) => {
-                        console.log('mqtt_ok', ok);
+        /**
+         *
+         * @param Host
+         * @param Port
+         * @param Topic
+         * @param Message
+         * @param callback
+         * @returns {Promise<void>}
+         */
+        const mqttWrapper = async function (Host, Port, Topic, Message, callback) {
+            // await new Promise((resolve, reject) => setTimeout(resolve, 1));
+            //
+            mqtt_send(Host, Port, Topic, Message)
+                .then((ok, re) => {
 
-                        // callback(ok)
-                        setTimeout(callback, 1000);
-                    });
+                    // callback(ok)
+                    setTimeout(callback, 1000);
+                });
+        };
+        interpreter.setProperty(scope, 'mqtt_send',
+            interpreter.createAsyncFunction(mqttWrapper));
+
+        const mqtt_subs_Wrapper = async function (Host, Port, Topic, Sensor, callback) {
+
+            const resolve_subs = await mqtt_subs(Host, Port, Topic)
+            map.set(Topic, Sensor);
+            document.addEventListener('message', (event) => {
+                let message = event.detail;
+                if (map.has(message.topic)) {
+                    document.getElementById(map.get(message.topic)).innerText = JSON.stringify(message);
+                }
             });
-        interpreter.setProperty(scope, 'mqtt_send', mqttWrapper);
+
+            callback(resolve_subs);
+        };
+        interpreter.setProperty(scope, 'mqtt_subs',
+            interpreter.createAsyncFunction(mqtt_subs_Wrapper));
 
     }
 
+    let map = new Map();
+    let cont = 0;
     let myInterpreter = null;
     let runner;
 
@@ -739,27 +781,36 @@ ${statements_reject}
      * MQTT FUNCTIONS BLOCKLY
      * ========================================================================
      */
-    function mqtt_subs(Host, Port, Topic, Message) {
-        console.log('hello mqtt_subs');
+    function mqtt_subs(Host, Port, Topic) {
+        return new Promise((resolve_subscribe, reject_subscribe) => {
+
+            const mqtt_controller = new MQTT_Controller();
+            mqtt_controller.MQTT_Connect(Host, Port)
+                .then((resolve, reject) => {
+                    if (resolve === true) {
+
+                        mqtt_controller.sub_topics(Topic)
+                            .then((resolve_topic_subscribe, reject_topic_subscribe) => {
+
+                                resolve_subscribe(true);
+                            });
+                    }
+                });
+        });
     }
 
     function mqtt_send(Host, Port, Topic, Message) {
-        return new Promise((send_resolve, send_reject) => {
-
-            console.log('hello mqtt_send');
+        return new Promise((resolve_send, reject_send) => {
 
             const mqtt_controller = new MQTT_Controller();
-
             mqtt_controller.MQTT_Connect(Host, Port)
                 .then((resolve, reject) => {
-                    console.log("resolve", resolve, reject)
 
                     if (resolve === true) {
                         mqtt_controller.send_message(Topic, Message)
                             .then((resolve_message, reject_message) => {
-                                console.log(resolve_message);
 
-                                send_resolve(resolve_message);
+                                resolve_send(resolve_message);
                             });
                     }
                 });
@@ -801,11 +852,9 @@ ${statements_reject}
                     cleanSession: true,
                     onSuccess: () => {
                         this.connected_flag = 1;
-                        console.log("on Connect " + this.connected_flag);
                         resolve(true);
                     },
                     onFailure: (message) => {
-                        console.log('failure')
                         resolve(false);
                         reject(new Error("On Connection"));
                     },
@@ -815,17 +864,20 @@ ${statements_reject}
         }
 
         onConnectionLost() {
-            console.log("connection lost");
             this.connected_flag = 0;
         }
 
         onMessageArrived(r_message) {
-            console.log(r_message.payloadString);
-            console.log(r_message.destinationName);
+
+            document.dispatchEvent(new CustomEvent("message", {
+                detail: {
+                    topic: r_message.destinationName,
+                    message: r_message.payloadString,
+                }
+            }));
         }
 
         onConnected(recon, url) {
-            console.log(" in onConnected ", recon, url);
         }
 
         disconnect() {
@@ -840,7 +892,6 @@ ${statements_reject}
                     return;
                 }
 
-                console.log("Subscribing to topic =" + topic + " QOS " + 0);
                 const sub_options = {
                     qos: 0,
                 };
@@ -852,7 +903,6 @@ ${statements_reject}
 
         send_message(topic, msg) {
             return new Promise((resolve, reject) => {
-                console.log('hi')
                 if (this.connected_flag === 0) {
                     resolve(false);
                     return;
