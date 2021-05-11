@@ -21,15 +21,19 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
+#define MQTT_SERVER_PORT 1883
+
 // Update these with values suitable for your network.
 
 const char* ssid = "MiFibra-5B22";
 const char* password = "nM25e3vM";
-const char* mqtt_server = "test.mosquitto.org";
+const char* mqtt_server = "broker.emqx.io";
+
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 unsigned long lastMsg = 0;
+
 #define MSG_BUFFER_SIZE	(50)
 char msg[MSG_BUFFER_SIZE];
 int value = 0;
@@ -110,7 +114,7 @@ void setup() {
   pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
   Serial.begin(115200);
   setup_wifi();
-  client.setServer(mqtt_server, 1883);
+  client.setServer(mqtt_server, MQTT_SERVER_PORT);
   client.setCallback(callback);
 }
 

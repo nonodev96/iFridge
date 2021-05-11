@@ -65,15 +65,14 @@
 
             <div class="col-lg-4" id="publish">
                 <form name="smessage" action="#" onsubmit="return send_message()">
+                    <div class="form-group">
+                        <label for="p_topic_id">Publish Topic:</label>
+                        <input id="p_topic_id" type="text" name="Ptopic" class="form-control">
+                    </div>
 
                     <div class="form-group">
                         <label for="message_id">Message:</label>
                         <input id="message_id" type="text" name="message" class="form-control">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="p_topic_id">Publish Topic:</label>
-                        <input id="p_topic_id" type="text" name="Ptopic" class="form-control">
                     </div>
 
                     <div class="form-group">
