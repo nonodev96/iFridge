@@ -329,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function () {
             init: function () {
                 this.jsonInit({
                     "type": "wait_a_minute",
-                    "message0": "wait_a_minute",
+                    "message0": "ujaen_wait_a_minute",
                     "args0": [
                         // {
                         //     "type": "field_input",
@@ -349,7 +349,7 @@ document.addEventListener('DOMContentLoaded', function () {
             init: function () {
                 this.jsonInit({
                     "type": "wait_time",
-                    "message0": "wait_time %1 ms",
+                    "message0": "ujaen_wait_time %1 ms",
                     "args0": [
                         {
                             "type": "field_input",
@@ -369,7 +369,7 @@ document.addEventListener('DOMContentLoaded', function () {
             init: function () {
                 this.jsonInit({
                     "type": "mqtt_send_async",
-                    "message0": "mqtt_send async - await %1 %2 %3 %4",
+                    "message0": "mqtt_ujaen_send async - await %1 %2 %3 %4",
                     "args0": [
                         {
                             "type": "field_input",
@@ -408,7 +408,7 @@ document.addEventListener('DOMContentLoaded', function () {
             init: function () {
                 this.jsonInit({
                     "type": "block_type",
-                    "message0": "Get Data",
+                    "message0": "mqtt_ujaen_getData",
                     "output": null,
                     "colour": 230,
                     "tooltip": "",
@@ -421,7 +421,7 @@ document.addEventListener('DOMContentLoaded', function () {
             init: function () {
                 this.jsonInit({
                     "type": "mqtt_send",
-                    "message0": "MQTT SEND delay %1:%2 topic: %3 msg: %4",
+                    "message0": "mqtt_ujaen_send delay %1:%2 topic: %3 msg: %4",
                     "args0": [
                         {
                             "type": "field_variable",
@@ -472,7 +472,7 @@ document.addEventListener('DOMContentLoaded', function () {
             init: function () {
                 this.jsonInit({
                     "type": "mqtt_subs",
-                    "message0": "mqtt_sub %1 %2 %3 %4",
+                    "message0": "mqtt_ujaen_sub %1 %2 %3 %4",
                     "args0": [
                         {
                             "type": "field_variable",
@@ -577,9 +577,9 @@ document.addEventListener('DOMContentLoaded', function () {
         Blockly.JavaScript.addReservedWords('mqtt_getData');
         Blockly.JavaScript.addReservedWords('mqtt_send');
         Blockly.JavaScript.addReservedWords('mqtt_send_async');
+        Blockly.JavaScript.addReservedWords('mqtt_subs');
         Blockly.JavaScript.addReservedWords('wait_a_minute');
         Blockly.JavaScript.addReservedWords('wait_time');
-        Blockly.JavaScript.addReservedWords('mqtt_subs');
 
         function wait(ms) {
             return new Promise(r => setTimeout(r, ms));
