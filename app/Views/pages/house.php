@@ -58,13 +58,16 @@
             </div>
         </div>
         <div class="row">
-
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div id="blocklyDiv" style="height: 650px;"></div>
             </div>
-            <div class="col-md-4">
-                <div id="saveButton" class="btn btn-block btn-outline-primary">Save</div>
-                <div id="playButton" class="btn btn-block btn-outline-success">Play</div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr>
+                <div id="saveButton" class="btn btn-outline-primary">Save</div>
+                <div id="playButton" class="btn btn-outline-success">Play</div>
+                <br>
                 <div id="codeDiv" class="main output-panel">
                     <div class="form-group" hidden>
                         <label for="languageDropdown">Language:</label>
@@ -146,12 +149,12 @@
     <script src="/assets/plugins/xmltojson.js"></script>
     <script src="https://unpkg.com/blockly/blockly.min.js"></script>
     <script src="/assets/plugins/blockly/javascript_compressed.js"></script>
-<!--    <script src="/assets/plugins/JS-Interpreter/acorn_interpreter.js"></script>-->
+    <!--    <script src="/assets/plugins/JS-Interpreter/acorn_interpreter.js"></script>-->
     <script src="/assets/plugins/JS-Interpreter/acorn.js"></script>
     <script src="/assets/plugins/JS-Interpreter/interpreter.js"></script>
     <script src="/assets/plugins/JS-Interpreter/interpreter.js"></script>
-<!--    <script src="/assets/plugins/mqtt-blockly/blocks_mqtt.js" type="module"></script>-->
-<!--    <script src="/assets/plugins/mqtt-blockly/generators_mqtt.js" type="module"></script>-->
+    <!--    <script src="/assets/plugins/mqtt-blockly/blocks_mqtt.js" type="module"></script>-->
+    <!--    <script src="/assets/plugins/mqtt-blockly/generators_mqtt.js" type="module"></script>-->
     <script src="/assets/js/block_main.js"></script>
     <script src="/assets/js/mqtt-house.js"></script>
 
