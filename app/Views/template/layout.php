@@ -22,7 +22,15 @@
 
 <?= $this->include('template/header') ?>
 
-<?= $this->include('template/notifications') ?>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <?= $this->include('template/notifications') ?>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</div>
 
 <main role="main">
     <?php $this->renderSection('content') ?>
@@ -31,8 +39,7 @@
 <?php $this->renderSection('modals') ?>
 
 <script src="//code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        ></script>
+<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="/assets/bootstrap-4.6.0-dist/js/bootstrap.min.js"></script>
 
 <?php $this->renderSection('scripts') ?>

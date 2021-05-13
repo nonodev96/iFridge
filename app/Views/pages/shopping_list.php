@@ -1,4 +1,4 @@
-<?php $this->section('page_title') ?>Inventory<?php $this->endSection() ?>
+<?php $this->section('page_title') ?>Shopping List<?php $this->endSection() ?>
 
 <?php $this->section('css') ?>
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
@@ -9,12 +9,12 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <h3>Inventory</h3>
+                <h3>Shopping List</h3>
             </div>
             <div class="col-md-4 float-right">
                 <button type="button" class="btn btn-block btn-primary" data-toggle="modal"
-                        data-target="#modal-inventory-add">
-                    Añadir objeto al almacen
+                        data-target="#modal-shopping_list-add">
+                    Añadir nuevo elemento a la lista de la compra
                 </button>
             </div>
         </div>
@@ -23,11 +23,11 @@
             <div class="col-lg-12">
                 <?php
                 $iterator = [
-                    'Inventory' => $inventory ?? []
+                    'shopping_list' => $shopping_list ?? []
                 ];
                 ?>
                 <?php foreach ($iterator as $name_table => $table): ?>
-                    <table id="table_id-Inventory" class="display">
+                    <table id="table_id-ShoppingList" class="display">
                         <thead>
                         <tr>
                             <?php $keys_ = array_keys($table[0] ?? []) ?>
@@ -46,12 +46,11 @@
                                 <td>
                                     <button type="button" class="btn btn-block btn-outline-warning" data-toggle="modal"
                                             data-object_id="<?= $value['id'] ?>"
-                                            data-amount="<?= $value['amount'] ?>"
-                                            data-target="#modal-inventory-update">
+                                            data-target="#modal-shopping_list-update">
                                         <?= lang('Form.update') ?>
                                     </button>
                                     <hr>
-                                    <?= form_open('Inventory/delete', 'method="post"') ?>
+                                    <?= form_open('ShoppingList/delete', 'method="post"') ?>
                                     <input type="hidden" name="id" value="<?= $value['id'] ?>">
                                     <button type="submit" class="btn btn-block btn-outline-danger">Borrar</button>
                                     <?= form_close() ?>
@@ -66,15 +65,14 @@
     </div>
 <?php $this->endSection() ?>
 
-<?php $this->include('modals/inventory') ?>
+<?php $this->include('modals/shopping_list') ?>
 
 <?php $this->section('scripts') ?>
     <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-    <script src="/assets/plugins/jsQR-master/dist/jsQR.js"></script>
-    <script src="/assets/js/qr.codeigniter.js"></script>
+
     <script>
         $(document).ready(function () {
-            $('#table_id-Inventory').DataTable();
+            $('#table_id-ShoppingList').DataTable();
             const buttons_update = document.querySelectorAll('button[data-object_id]');
             buttons_update.forEach((button, key) => {
                 button.addEventListener('click', () => {

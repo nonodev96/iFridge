@@ -23,6 +23,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="<?= site_url('Inventory') ?>">Inventory</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= site_url('ShoppingList') ?>">Shopping List</a>
+                    </li>
                     <?php if (session('userData')['role']): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= site_url('admin') ?>">Admin</a>
