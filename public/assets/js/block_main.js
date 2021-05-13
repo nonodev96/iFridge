@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
           <block type="mqtt_send_async"></block>
           <block type="mqtt_send"></block>
           <block type="mqtt_subs"></block>
+          <block type="mqtt_getData"></block>
           <block type="wait_a_minute"></block>
           <block type="wait_time"></block>
 <!--        <block type="mqtt_block"></block>-->
@@ -403,6 +404,19 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
+        Blockly.Blocks['mqtt_getData'] = {
+            init: function () {
+                this.jsonInit({
+                    "type": "block_type",
+                    "message0": "Get Data",
+                    "output": null,
+                    "colour": 230,
+                    "tooltip": "",
+                    "helpUrl": ""
+                })
+            }
+        }
+
         Blockly.Blocks['mqtt_send'] = {
             init: function () {
                 this.jsonInit({
@@ -502,6 +516,11 @@ document.addEventListener('DOMContentLoaded', function () {
             return [`wait_time('${text_time}')`, Blockly.JavaScript.ORDER_NONE];
         }
 
+        Blockly.JavaScript['mqtt_getData'] = function (block) {
+            const code = 'mqtt_getData()';
+            return [code, Blockly.JavaScript.ORDER_NONE];
+        };
+
         Blockly.JavaScript['mqtt_send'] = function (block) {
             const text_host = block.getField('mqtt_send_host').getText();
             const text_port = block.getField('mqtt_send_port').getText();
@@ -552,7 +571,10 @@ document.addEventListener('DOMContentLoaded', function () {
         //prettyPrint();
     }
 
+    const event = new Event('message');
+
     function asyncFunctions(interpreter, scope) {
+        Blockly.JavaScript.addReservedWords('mqtt_getData');
         Blockly.JavaScript.addReservedWords('mqtt_send');
         Blockly.JavaScript.addReservedWords('mqtt_send_async');
         Blockly.JavaScript.addReservedWords('wait_a_minute');
@@ -562,6 +584,18 @@ document.addEventListener('DOMContentLoaded', function () {
         function wait(ms) {
             return new Promise(r => setTimeout(r, ms));
         }
+
+        const mqtt_getDataWrapper = async function (callback) {
+            console.log('mqtt_getDataWrapper')
+            document.addEventListener('message', (event) => {
+                const content = event.detail.topic + ":" + event.detail.message;
+                callback(content);
+            });
+        }
+
+        interpreter.setProperty(scope, 'mqtt_getData',
+            interpreter.createAsyncFunction(mqtt_getDataWrapper));
+
 
         function mqtt_send_(Host, Port, Topic, Message) {
             return new Promise((resolve) => {
@@ -868,13 +902,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         onMessageArrived(r_message) {
-
-            document.dispatchEvent(new CustomEvent("message", {
-                detail: {
-                    topic: r_message.destinationName,
-                    message: r_message.payloadString,
-                }
-            }));
+            console.log(r_message)
+            document.dispatchEvent(
+                new CustomEvent("message", {
+                    detail: {
+                        topic: r_message.destinationName,
+                        message: r_message.payloadString,
+                    }
+                })
+            );
         }
 
         onConnected(recon, url) {

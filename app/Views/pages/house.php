@@ -1,4 +1,4 @@
-<?php $this->section('page_title') ?>Admin<?php $this->endSection() ?>
+<?php $this->section('page_title') ?>House<?php $this->endSection() ?>
 
 <?php $this->section('css') ?>
 

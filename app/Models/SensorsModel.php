@@ -8,7 +8,7 @@ class SensorsModel extends Model
 {
 	protected $DBGroup              = 'default';
 	protected $table                = 'sensors';
-	protected $primaryKey           = 'sensor_id';
+	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
