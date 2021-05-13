@@ -52,20 +52,17 @@
     </template>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <h3>Code</h3>
                 <hr>
             </div>
-            <div class="col-md-1"></div>
         </div>
         <div class="row">
-            <div class="col-md-1"></div>
 
-            <div class="col-md-7">
+            <div class="col-md-8">
                 <div id="blocklyDiv" style="height: 650px;"></div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div id="saveButton" class="btn btn-block btn-outline-primary">Save</div>
                 <div id="playButton" class="btn btn-block btn-outline-success">Play</div>
                 <div id="codeDiv" class="main output-panel">
@@ -79,11 +76,10 @@
                     <pre translate="no" dir="ltr"></pre>
                 </div>
             </div>
-            <div class="col-md-1"></div>
 
         </div>
     </div>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <h3>House</h3>
@@ -91,12 +87,12 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="box">
                     <custom-house></custom-house>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <p id="sensor_1">Sensor {{mqtt[$host][$port][$topic_1]}}</p>
                 <p id="sensor_2">Sensor {{mqtt[$host][$port][$topic_2]}}</p>
                 <p id="sensor_3">Sensor {{mqtt[$host][$port][$topic_3]}}</p>
