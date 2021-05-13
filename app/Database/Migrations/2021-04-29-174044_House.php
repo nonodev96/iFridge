@@ -30,6 +30,10 @@ class House extends Migration
                 'type'       => 'int',
                 'constraint' => 5
             ],
+            'city'      => [
+                'type'       => 'varchar',
+                'constraint' => 255
+            ],
         ]);
         $this->forge->addKey('house_id', true);
         $this->forge->addForeignKey('user_id', 'users', 'user_id', 'CASCADE', 'CASCADE');
@@ -37,8 +41,8 @@ class House extends Migration
 
         $this->db->query(
 <<<EOC
-INSERT INTO `houses` (`house_id`, `user_id`, `name`, `broker`, `port`) VALUES
-(1, 1, 'nonodev96', 'broker.emqx.io', '8084');
+INSERT INTO `houses` (`house_id`, `user_id`, `name`, `broker`, `port`, `city`) VALUES
+(1, 1, 'nonodev96', 'broker.emqx.io', '8084', 'jaen');
 EOC
         );
     }

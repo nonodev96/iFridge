@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Auth;
 
+use App\Models\HouseModel;
 use App\Models\UserModel;
 use CodeIgniter\Controller;
 use CodeIgniter\Session\Session;
@@ -48,9 +49,9 @@ class AccountController extends Controller
         return view(
             $this->config->views['account'],
             [
-                'userData'  => $this->session->userData,
+                'userData' => $this->session->userData,
                 'houseData' => $this->session->houseData,
-                'config'    => $this->config
+                'config' => $this->config
             ]
         );
     }
@@ -68,7 +69,7 @@ class AccountController extends Controller
         $users->setValidationRules($getRule);
         $user = [
             'user_id' => $this->session->get('userData.user_id'),
-            'name'    => $this->request->getPost('name')
+            'name' => $this->request->getPost('name')
         ];
 
         if (!$users->save($user)) {
@@ -77,6 +78,34 @@ class AccountController extends Controller
 
         // update session data
         $this->session->push('userData', $user);
+
+        return redirect()->to('account')->with('success', lang('Auth.updateSuccess'));
+    }
+
+    /**
+     * Updates regular account settings.
+     */
+    public function updateHouse(): \CodeIgniter\HTTP\RedirectResponse
+    {
+
+        // update user, validation happens in model
+        $houseModel = new HouseModel();
+        $getRule = $houseModel->getRule('updateHouse');
+        $houseModel->setValidationRules($getRule);
+        $house = [
+            'user_id' => $this->session->get('userData.user_id'),
+            'name'    => $this->request->getPost('name'),
+            'broker'  => $this->request->getPost('broker'),
+            'port'    => $this->request->getPost('port'),
+            'city'    => $this->request->getPost('city'),
+        ];
+
+        if (!$houseModel->save($house)) {
+            return redirect()->back()->withInput()->with('errors', $houseModel->errors());
+        }
+
+        // update session data
+        $this->session->push('houseData', $house);
 
         return redirect()->to('account')->with('success', lang('Auth.updateSuccess'));
     }
@@ -103,8 +132,8 @@ class AccountController extends Controller
         $getRule = $users->getRule('changeEmail');
         $users->setValidationRules($getRule);
         $updatedUser = [
-            'user_id'       => $this->session->get('userData.user_id'),
-            'new_email'     => $this->request->getPost('new_email'),
+            'user_id' => $this->session->get('userData.user_id'),
+            'new_email' => $this->request->getPost('new_email'),
             'activate_hash' => random_string('alnum', 32),
         ];
         if (!$users->save($updatedUser)) {
@@ -151,7 +180,7 @@ class AccountController extends Controller
         if ($this->session->isLoggedIn) {
             $this->session->push(
                 'userData', [
-                    'email'     => $updatedUser['email'],
+                    'email' => $updatedUser['email'],
                     'new_email' => NULL,
                 ]
             );
@@ -171,8 +200,8 @@ class AccountController extends Controller
     {
         // validate request
         $rules = [
-            'password'             => 'required|min_length[5]',
-            'new_password'         => 'required|min_length[5]',
+            'password' => 'required|min_length[5]',
+            'new_password' => 'required|min_length[5]',
             'new_password_confirm' => 'required|matches[new_password]',
         ];
 

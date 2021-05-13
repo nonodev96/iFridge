@@ -98,6 +98,7 @@ class LoginController extends Controller
             'name'    => $house['name'],
             'broker'  => $house['broker'],
             'port'    => $house['port'],
+            'city'    => $house['city'],
         ]);
 
         return redirect()->to('account');
@@ -112,7 +113,8 @@ class LoginController extends Controller
     {
         $this->session->remove([
             'isLoggedIn',
-            'userData'
+            'userData',
+            'houseData'
         ]);
 
         return redirect()->to('login');

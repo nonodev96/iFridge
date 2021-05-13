@@ -19,7 +19,8 @@ class HouseModel extends Model
         'user_id',
         'name',
         'broker',
-        'port'
+        'port',
+        'city',
     ];
 
 	// Dates
@@ -45,4 +46,19 @@ class HouseModel extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+    protected $dynamicRules         = [
+        'updateHouse' => [
+            'name'    => 'required',
+            'broker'  => 'required',
+            'port'    => 'required',
+            'city'    => 'required',
+        ],
+    ];
+
+    public function getRule(string $rule): array
+    {
+        return $this->dynamicRules[$rule];
+    }
+
 }

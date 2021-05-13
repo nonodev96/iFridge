@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Auth library</title>
+    <title>Account</title>
     <link href="/assets/bootstrap-4.6.0-dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="/assets/css/styles.css">

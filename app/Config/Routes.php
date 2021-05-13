@@ -47,6 +47,18 @@ $routes->cli('cron', 'Cron::index');
 $routes->get('admin', 'Admin::index');
 
 $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('Calendar/load',   'App\Calendar::load');
+    $routes->get('Calendar/insert', 'App\Calendar::insert');
+    $routes->get('Calendar/update', 'App\Calendar::update');
+    $routes->get('Calendar/delete', 'App\Calendar::delete');
+});
+
+$routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('Inventory/insert', 'App\Inventory::insert');
+    $routes->get('Inventory/delete', 'App\Inventory::delete');
+});
+
+$routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     // Registration
     $routes->get('register', 'Auth\RegistrationController::register', ['as' => 'register']);
     $routes->post('register', 'Auth\RegistrationController::attemptRegister');
@@ -72,6 +84,9 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('confirm-email', 'Auth\AccountController::confirmNewEmail');
     $routes->post('change-password', 'Auth\AccountController::changePassword');
     $routes->post('delete-account', 'Auth\AccountController::deleteAccount');
+
+    // Update House
+    $routes->post('update-house', 'Auth\AccountController::updateHouse');
 });
 
 /*

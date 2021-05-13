@@ -128,6 +128,10 @@
                         <label for="port_id"><?= lang('House.currentPort') ?></label>
                         <input type="text" id="port_id" name="port" class="form-control" value="<?= $houseData['port'] ?>" required>
                     </div>
+                    <div class="form-group">
+                        <label for="city_id"><?= lang('House.currentCity') ?></label>
+                        <input type="text" id="city_id" name="city" class="form-control" value="<?= $houseData['city'] ?>" required>
+                    </div>
 
                     <div class="form-group">
                         <input type="submit" name="changeHouse" class="btn btn-primary"

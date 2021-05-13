@@ -6,4 +6,5 @@ return [
     'currentNameHouse' => 'Nombre casa actual',
     'currentBroker'    => 'Broker',
     'currentPort'      => 'Puerto',
+    'currentCity'      => 'Ciudad',
 ];

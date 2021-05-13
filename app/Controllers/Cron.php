@@ -36,7 +36,7 @@ class Cron extends BaseController
                 $htmlMessage .= "</li>";
             }
             $htmlMessage .= "</ul>";
-//            var_dump($htmlMessage);
+
             $this->send_email($email, $htmlMessage);
         }
     }
